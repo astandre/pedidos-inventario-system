@@ -1,0 +1,163 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block title %}Nuevo Pedido{% endblock %}
+
+
+{% block main %}
+    <div class="row">
+        {#    TODO make this form look better#}
+        {{ form.as_table }}
+
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Productos disponibles</h2>
+            <table class="table table-sm">
+                <thead>
+                <tr>
+                    <th scope="col" style="display:none;">Codigo</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Descripcion</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Añadir</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if categorias %}
+                    {% for categoria in categorias %}
+                        <tr>
+                            <td align="center" colspan="4">{{ categoria.nombre }}</td>
+                        </tr>
+                        {% if categoria.productos.all %}
+                            {% for producto in categoria.productos.all %}
+                                {% if not producto.disponible %}
+                                    <tr class="table-danger">
+                                        {% else %}
+                                    <tr>
+                                {% endif %}
+                            <td style="display:none;">{{ producto.id_producto }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.descripcion }}</td>
+                            <td>{{ producto.precio }}</td>
+                            <td>
+                                {% if not producto.disponible %}
+                                    <button type="button" class="btn btn-primary"
+                                            disabled>
+                                        Añadir
+                                    </button>
+                                {% else %}
+                                    <button type="button" class="btn btn-primary"
+                                            onclick="addItem(this)">
+                                        Añadir
+                                    </button>
+                                {% endif %}
+
+                            </td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6">
+            <h2>Pedido</h2>
+            <table class="table table-sm" id="items_table">
+                <thead>
+                <tr>
+                    <th scope="col" style="display:none;">Codigo</th>
+                    <th scope="col">Cantidad</th>
+                    <th scope="col">Item</th>
+                    <th scope="col">Especificacion</th>
+                    <th scope="col">Precio</th>
+                    <th scope="col">Eliminar</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 offset-md-5 ">
+            <button type="button" class="btn btn-info btn-lg btn-block">Verficar Total</button>
+        </div>
+        <div class="col-md-2 ">
+            <button type="button" class="btn btn-primary btn-lg btn-block">Cobrar</button>
+        </div>
+        <div class="col-md-2">
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Total</span>
+                </div>
+                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm" value="5.20" readonly>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript">
+
+
+        function deleteItem(x) {
+            {#console.log("Deleting item");#}
+            var $row = $(x).closest("tr");      // Finds the closest row <tr>
+            $row.remove();
+        }
+
+        function addItem(x) {
+            var $row = $(x).closest("tr"),       // Finds the closest row <tr>
+                $tds = $row.find("td"); // Finds all children <td> elements
+            var new_row = [];
+            $.each($tds, function () {               // Visits every single <td> element
+                new_row.push($(this).text());// Prints out the text within the <td>
+            });
+            {#console.log(new_row);#}
+            $("#items_table").find('tbody')
+                .append($('<tr>')
+                    .append($('<td>')
+                        .append(new_row[0])
+                        .attr('style', 'display:none;')
+                    )
+                    .append($('<td>')
+                        .append($('<input>'))
+                        .attr('type', 'number')
+                        .attr('pattern', '[0-9]')
+                    )
+                    .append($('<td>')
+                        .append(new_row[1])
+                    )
+                    .append($('<td>')
+                        .attr('contenteditable', 'true')
+                    )
+                    .append($('<td>')
+                        .append(new_row[3])
+                    )
+                    .append($('<td>')
+                        .append($('<button>')
+                            .attr("type", "button")
+                            .attr("class", "btn btn-danger")
+                            .click(function () {
+                                    deleteItem(this);
+                                }
+                            )
+                            .append("Eliminar")
+                        )
+                    )
+                );
+        }
+
+        function sendData() {
+
+            var $row = $("#items_table").closest("tr"),       // Finds the closest row <tr>
+                $tds = $row.find("td"); // Finds all children <td> elements
+            var new_row = [];
+            $.each($tds, function () {               // Visits every single <td> element
+                new_row.push($(this).text());// Prints out the text within the <td>
+            });
+        }
+    </script>
+{% endblock %}

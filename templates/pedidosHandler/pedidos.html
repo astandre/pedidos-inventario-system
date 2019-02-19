@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block title %}Pedidos{% endblock %}
+
+
+{% block main %}
+    {% if pedidos %}
+        {% for pedido in pedidos %}
+
+            <p>{{ pedido.get_mesa_display }}</p>
+            <p>{{ pedido.get_estado_display }}</p>
+            <p>{{ pedido.total }}</p>
+            <a href="">VER</a>
+        {% endfor %}
+    {% endif %}
+
+{% endblock %}
