@@ -1,3 +1,5 @@
+pedidosHandler/migrations/*.*
+inventarioHandler/migrations/*.*
 
 
 ### OSX ###
