@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block title %}Cocina{% endblock %}
+
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-9 offset-md-1">
+
+            {% if pedidos %}
+                <h2>Pedidos</h2>
+                <div class="row">
+                {% for pedido in pedidos %}
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">#{{ pedido.id_pedido }}</h5>
+                                <h5 class="card-title"> Mesa: {{ pedido.get_mesa_display }}</h5>
+                                <p class="card-text">Estado: {{ pedido.get_estado_display }} </p>
+                                {% if pedido.items.all %}
+                                    <table class="table table-sm" id="items_table">
+                                        <thead>
+                                        <tr>
+                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">Item</th>
+                                            <th scope="col">Especificacion</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for item in pedido.items.all %}
+                                            <tr>
+                                                <td>{{ item.cantidad }}</td>
+                                                <td>{{ item.producto.nombre }}</td>
+                                                <td>{{ item.especificacion }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                {% endif %}
+
+                                <a class="btn btn-primary"
+                                   href="{% url 'pedido_update_estado_completo' pedido.id_pedido %}"
+                                   role="button">Completar</a>
+                                {#                            <a class="btn btn-warning"#}
+                                {#                               href="#"#}
+                                {#                               role="button">Nose puede completar</a>#}
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                {% endfor %}
+            {% else %}
+                <h2>No hay pedidos por el momento</h2>
+            {% endif %}
+
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

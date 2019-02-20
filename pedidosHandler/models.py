@@ -1,5 +1,6 @@
 from django.db import models
 from inventarioHandler.models import Producto
+from .utils import constants
 
 
 # Create your models here.
@@ -40,49 +41,13 @@ class Cliente(models.Model):
 
 
 class Pedido(models.Model):
+    # TODO add begin time and end time
+    # TODO make id_pedido unique for day
     id_pedido = models.AutoField(primary_key=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    A1 = 'AI'
-    A2 = 'AD'
-    A3 = 'AT'
-    A4 = 'AM'
-    A5 = 'AE'
-    B1 = 'B1'
-    B2 = 'B2'
-    B3 = 'B3'
-    B4 = 'B4'
-    B5 = 'B5'
-    B6 = 'B6'
-    B7 = 'B7'
-    B8 = 'B8'
-    B9 = 'B9'
-    MESA_CHOICES = (
-        (A1, 'Afuera puerta izquierda'),
-        (A2, 'Afuera puerta derecha'),
-        (A3, 'Afuera televisor'),
-        (A4, 'Afuera meson'),
-        (A5, 'Afuera extra1'),
-        (B1, 'Adentro #1'),
-        (B2, 'Adentro #2'),
-        (B3, 'Adentro #3'),
-        (B4, 'Adentro #4'),
-        (B5, 'Adentro #5'),
-        (B6, 'Adentro #6'),
-        (B7, 'Adentro #7'),
-        (B8, 'Adentro #8'),
-        (B9, 'Adentro extra 1'),
-
-    )
-    mesa = models.CharField(max_length=2, choices=MESA_CHOICES, blank=False, default=A1)
-    PREPARANDO = "P"
-    COMPLETO = "C"
-    PAGADO = "G"
-    ESTADO_CHOICES = (
-        (PREPARANDO, 'PREPARANDO'),
-        (COMPLETO, 'COMPLETO'),
-        (PAGADO, 'PAGADO'),
-    )
-    estado = models.CharField(max_length=1, choices=ESTADO_CHOICES, blank=False, default=PREPARANDO)
+    mesa = models.CharField(max_length=2, choices=constants.MESA_CHOICES, blank=False, default=constants.A1)
+    # fecha = models.DateField(auto_now_add=True)
+    estado = models.CharField(max_length=1, choices=constants.ESTADO_CHOICES, blank=False, default=constants.PREPARANDO)
     total = models.DecimalField(null=False, max_digits=5, decimal_places=2)
 
     class Meta:
@@ -98,7 +63,8 @@ class Item(models.Model):
     # TODO rewrite when item is saved to store actual price
     id_item = models.AutoField(primary_key=True)
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    especificacion = models.CharField(max_length=200, null=True,blank=True)
+    cantidad = models.IntegerField(blank=False, null=False, default=1)
+    especificacion = models.CharField(max_length=200, null=True, blank=True)
     precio = models.DecimalField(null=False, max_digits=5, decimal_places=2)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
 

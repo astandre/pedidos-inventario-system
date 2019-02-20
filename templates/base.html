@@ -11,9 +11,10 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto+Condensed" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/base.css' %}">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    {#    <link rel="stylesheet" type="text/js" href="{% static 'js/base.js' %}">#}
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -30,7 +31,7 @@
 <header>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         {#            TODO add admin url dinamically#}
-        <a class="navbar-brand" href="#">Admin</a>
+        <a class="navbar-brand" href="/admin">Admin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -38,11 +39,13 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Nuevo Pedido</a>
+                    <a class="nav-link" target="_blank" href="{% url 'pedido_nuevo' %}">Nuevo Pedido</a>
                 </li>
                 <li class="nav-item">
-
-                    <a class="nav-link" href="">Cocina</a>
+                    <a class="nav-link" href="{% url 'pedidos' %}">Caja</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" target="_blank" href="{% url 'cocina' %}">Cocina</a>
                 </li>
             </ul>
         </div>
@@ -50,6 +53,16 @@
 </header>
 <main>
     <div class="container-fluid">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         {% block main %}
 
         {% endblock %}

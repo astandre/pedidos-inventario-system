@@ -1,19 +1,42 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block head %}
-
+    <script src="{% static 'js/date/date.js' %}"></script>
+    <script src="{% static 'js/date/date-es-EC.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 {% endblock %}
 {% block title %}Nuevo Pedido{% endblock %}
 
 
 {% block main %}
-    <div class="row">
-        {#    TODO make this form look better#}
-        {{ form.as_table }}
+    <br>
 
+    <div class="row">
+        <div class="col-md-4">
+            {#    TODO make this form look better#}
+            {{ form.as_table }}
+        </div>
+        <div class="col-md-2">
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Orden #</span>
+                </div>
+                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                       value="{% if pedido %}{{ pedido.id_pedido }}{% endif %}" readonly id="id-orden">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group input-group-lg">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Fecha: </span>
+                </div>
+                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                       readonly id="fecha">
+            </div>
+        </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-5">
             <h2>Productos disponibles</h2>
             <table class="table table-sm">
                 <thead>
@@ -60,47 +83,97 @@
                             {% endfor %}
                         {% endif %}
                     {% endfor %}
+                {% else %}
+                    <tr>
+                        <td align="center" colspan="6">No existen productos agregados aun</td>
+                    </tr>
                 {% endif %}
                 </tbody>
             </table>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-7">
             <h2>Pedido</h2>
             <table class="table table-sm" id="items_table">
                 <thead>
                 <tr>
                     <th scope="col" style="display:none;">Codigo</th>
-                    <th scope="col">Cantidad</th>
+                    <th scope="col">#</th>
                     <th scope="col">Item</th>
                     <th scope="col">Especificacion</th>
                     <th scope="col">Precio</th>
+                    <th scope="col">Subtotal</th>
                     <th scope="col">Eliminar</th>
                 </tr>
                 </thead>
                 <tbody>
+
+                {% if pedido %}
+                    {% for item in pedido.items.all %}
+                        <tr>
+                            <td style="display:none;" class="id-item">{{ item.producto.id_producto }}</td>
+                            <td class="cantidad-item">
+                                <input class="cantidad-item" type="number" min="0" pattern="[0-9]"
+                                       value="{{ item.cantidad }}" readonly>
+                            </td>
+                            <td>{{ item.producto.nombre }}</td>
+                            <td class="esp-item">{{ item.especificacion }}</td>
+                            <td class="precio-item">{{ item.precio }}</td>
+                            <td class="sub-item">{{ item.precio }}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="deleteRow()" disabled>Eliminar
+                                </button>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr id="initialmessage">
+                        <td align="center" colspan="6">Agrega nuevos productos ahora!</td>
+                    </tr>
+                {% endif %}
+
 
                 </tbody>
             </table>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2 offset-md-5 ">
-            <button type="button" class="btn btn-info btn-lg btn-block">Verficar Total</button>
+        <div class="col-md-2 offset-md-6 ">
+            <button type="button" class="btn btn-info btn-lg btn-block" id="verificar" onclick="enviarOrden()">
+                Solicitar
+            </button>
         </div>
         <div class="col-md-2 ">
-            <button type="button" class="btn btn-primary btn-lg btn-block">Cobrar</button>
+            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="cobrar()">Cobrar</button>
         </div>
         <div class="col-md-2">
             <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Total</span>
                 </div>
-                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm" value="5.20" readonly>
+                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                       value="{% if pedido %}{{ pedido.total }}{% else %}0,00{% endif %}" readonly id="total">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Dinero</span>
+                </div>
+                <input type="number" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                       id="dinero" min="0">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-lg">Vuelto</span>
+                </div>
+                <input type="number" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                       readonly id="vuelto">
             </div>
         </div>
     </div>
     <script type="application/javascript">
+        var csrftoken = Cookies.get('csrftoken');
+        $(document).ready(function () {
+            var today = new Date().toString('d - MMMM - yyyy');
+            $("#fecha").val(today);
+            $("#id_mesa").addClass("custom-select");
 
+        });
 
         function deleteItem(x) {
             {#console.log("Deleting item");#}
@@ -108,7 +181,29 @@
             $row.remove();
         }
 
+        function update_values() {
+            var cantidad = $(this).val();
+            var precio = $(this).closest('tr').find(".precio-item").text();
+            precio = parseFloat(precio.replace(",", "."));
+            var subtotal = cantidad * precio;
+            subtotal = subtotal.toFixed(2);
+            $(this).closest('tr').find(".sub-item").text(subtotal.replace(".", ","));
+            verificarTotal();
+
+        }
+
+        function deleteRow() {
+
+            deleteItem(this);
+            verificarTotal();
+
+        }
+
         function addItem(x) {
+            if ($("#initialmessage").length) {
+                $("#initialmessage").remove()
+            }
+
             var $row = $(x).closest("tr"),       // Finds the closest row <tr>
                 $tds = $row.find("td"); // Finds all children <td> elements
             var new_row = [];
@@ -120,21 +215,43 @@
                 .append($('<tr>')
                     .append($('<td>')
                         .append(new_row[0])
+                        .addClass("id-item")
                         .attr('style', 'display:none;')
                     )
                     .append($('<td>')
-                        .append($('<input>'))
-                        .attr('type', 'number')
-                        .attr('pattern', '[0-9]')
+                        .addClass("cantidad-item")
+                        .append($('<input>')
+                            .addClass("cantidad-item")
+                            .attr('type', 'number')
+                            .attr('style', 'width: 40px')
+                            .attr('min', '0')
+                            .attr('pattern', '[0-9]')
+                            .val(1)
+                            .change(function () {
+                                var cantidad = $(this).val();
+                                var precio = $(this).closest('tr').find(".precio-item").text();
+                                precio = parseFloat(precio.replace(",", "."));
+                                var subtotal = cantidad * precio;
+                                subtotal = subtotal.toFixed(2);
+                                $(this).closest('tr').find(".sub-item").text(subtotal.replace(".", ","));
+                                verificarTotal();
+                            })
+                        )
                     )
                     .append($('<td>')
                         .append(new_row[1])
                     )
                     .append($('<td>')
                         .attr('contenteditable', 'true')
+                        .addClass("esp-item")
                     )
                     .append($('<td>')
                         .append(new_row[3])
+                        .addClass("precio-item")
+                    )
+                    .append($('<td>')
+                        .append(new_row[3])
+                        .addClass("sub-item")
                     )
                     .append($('<td>')
                         .append($('<button>')
@@ -142,22 +259,119 @@
                             .attr("class", "btn btn-danger")
                             .click(function () {
                                     deleteItem(this);
+                                    verificarTotal();
                                 }
                             )
                             .append("Eliminar")
                         )
                     )
-                );
+                )
+            ;
+            verificarTotal();
         }
 
-        function sendData() {
 
-            var $row = $("#items_table").closest("tr"),       // Finds the closest row <tr>
-                $tds = $row.find("td"); // Finds all children <td> elements
-            var new_row = [];
-            $.each($tds, function () {               // Visits every single <td> element
-                new_row.push($(this).text());// Prints out the text within the <td>
+        function prepareItems() {
+            var items = [];
+            $('#items_table tr').each(function (a, b) {
+                {#console.log(a);#}
+                {#console.log(b);#}
+                if (a > 0) {
+                    var id = $('.id-item', b).text();
+                    var cantidad = $('.cantidad-item', b).closest("input").val();
+                    var esp = $('.esp-item', b).text();
+                    var precio = $('.precio-item', b).text();
+                    items.push({
+                        "id": id,
+                        "cantidad": cantidad,
+                        "esp": esp,
+                        "precio": precio,
+                    });
+                }
+
             });
+            {#console.log(items);#}
+            return items;
+        }
+
+        function verificarTotal() {
+            var total = 0.0;
+            $('#items_table tr').each(function (a, b) {
+                if (a > 0) {
+
+                    var subtotal = $('.sub-item', b).text();
+                    subtotal = parseFloat(subtotal.replace(",", "."));
+                    total += subtotal;
+                }
+
+            });
+            {#console.log(total);#}
+            total = total.toFixed(2);
+            $('#total').val(total.replace(".", ","));
+        }
+
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        }
+
+
+        function enviarOrden() {
+            verificarTotal();
+            var data = {};
+            data["items"] = prepareItems();
+            data["mesa"] = $("#id_mesa").val();
+            data["total"] = $("#total").val();
+            data["total"] = parseFloat(data["total"].replace(",", "."));
+            var id = $("#id-orden").val();
+            if (id !== "") {
+                data["id"] = id;
+            }
+            console.log(data);
+            if (data["items"].length > 0) {
+                $.ajax({
+                    method: "POST",
+                    url: " {% url 'pedido_nuevo_api' %}",
+                    dataType: 'json',
+                    contentType: 'application/json',
+                    data: JSON.stringify(data),
+                    beforeSend: function (xhr, settings) {
+                        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                            xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                        }
+                    },
+                    success: function (data) {
+                        alert("Pedido añadido");
+                        console.log(data);
+                        $("#id-orden").val(data["id-orden"]);
+                    }, error: function (error) {
+                        console.log(error);
+                    }
+
+                });
+            } else {
+                alert("Debe seleccionar items para el pedidos");
+            }
+
+
+        }
+
+        function cobrar() {
+            var total = $("#total").val();
+            total = parseFloat(total.replace(",", "."));
+            var dinero = $("#dinero").val();
+            console.log(total);
+            console.log(dinero);
+            console.log(total > dinero);
+            if (total > dinero) {
+                alert("Dinero no suficiente")
+            } else {
+                var vuelto = dinero - total;
+                console.log(vuelto);
+                vuelto = vuelto.toFixed(2);
+                $("#vuelto").val(vuelto);
+            }
+
         }
     </script>
 {% endblock %}

@@ -17,8 +17,9 @@ class ItemsAdmin(admin.ModelAdmin):
 
 class PedidosAdmin(admin.ModelAdmin):
     inlines = [ItemsInline]
-    list_display = ('cliente', 'total')
-    list_filter = ['cliente__cedula', 'cliente__nombres', 'cliente__apellidos']
+    search_fields = ['id_pedido']
+    list_display = ('id_pedido', 'cliente', 'total', 'estado')
+    list_filter = ['cliente__cedula', 'cliente__nombres', 'cliente__apellidos','estado']
 
 
 class ClientesAdmin(admin.ModelAdmin):

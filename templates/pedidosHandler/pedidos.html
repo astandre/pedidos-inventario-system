@@ -7,14 +7,42 @@
 
 
 {% block main %}
-    {% if pedidos %}
-        {% for pedido in pedidos %}
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2>Pedidos en caja</h2>
+            <table class="table table-sm" id="items_table">
+                <thead>
+                <tr>
+                    <th scope="col">Cliente</th>
+                    <th scope="col">Mesa</th>
+                    <th scope="col">Estado</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Ver</th>
+                    <th scope="col">Finalizar</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if pedidos %}
+                    {% for pedido in pedidos %}
+                        <tr>
+                            <td>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}</td>
+                            <td>{{ pedido.get_mesa_display }}</td>
+                            <td>{{ pedido.get_estado_display }}</td>
+                            <td>{{ pedido.total }}</td>
+                            <td>
+                                <a class="btn btn-primary"
+                                   href="{% url 'pedido_detalle' pedido.id_pedido %}" role="button">VER</a></td>
+                            <td><a class="btn btn-primary"
+                                   href="{% url 'pedido_update_estado_pagado' pedido.id_pedido %}" role="button">Finalizar</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
 
-            <p>{{ pedido.get_mesa_display }}</p>
-            <p>{{ pedido.get_estado_display }}</p>
-            <p>{{ pedido.total }}</p>
-            <a href="">VER</a>
-        {% endfor %}
-    {% endif %}
+        </div>
+    </div>
+
 
 {% endblock %}
