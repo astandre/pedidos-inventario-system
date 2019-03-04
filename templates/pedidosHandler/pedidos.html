@@ -15,7 +15,8 @@
                 <tr>
                     <th scope="col">Cliente</th>
                     <th scope="col">Mesa</th>
-                    <th scope="col">Estado</th>
+                    <th scope="col">Pagado</th>
+                    <th scope="col">Terminado</th>
                     <th scope="col">Total</th>
                     <th scope="col">Ver</th>
                     <th scope="col">Finalizar</th>
@@ -27,7 +28,8 @@
                         <tr>
                             <td>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}</td>
                             <td>{{ pedido.get_mesa_display }}</td>
-                            <td>{{ pedido.get_estado_display }}</td>
+                            <td>{{ pedido.pagado }}</td>
+                            <td>{{ pedido.terminado }}</td>
                             <td>{{ pedido.total }}</td>
                             <td>
                                 <a class="btn btn-primary"

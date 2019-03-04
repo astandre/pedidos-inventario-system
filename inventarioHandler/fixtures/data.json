@@ -1,0 +1,1130 @@
+[
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 1,
+    "fields": {
+      "nombre": "Platos Fuertes"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 2,
+    "fields": {
+      "nombre": "Extras (Platos Fuertes)"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 3,
+    "fields": {
+      "nombre": "Pollo Hornado"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 4,
+    "fields": {
+      "nombre": "Papas Fritas"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 5,
+    "fields": {
+      "nombre": "Hamburguesas"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 6,
+    "fields": {
+      "nombre": "Sanduches"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 7,
+    "fields": {
+      "nombre": "Tostada"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 8,
+    "fields": {
+      "nombre": "Hot dog"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 9,
+    "fields": {
+      "nombre": "Ensalada de Frutas"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 10,
+    "fields": {
+      "nombre": "Postres"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 11,
+    "fields": {
+      "nombre": "Jugos"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 12,
+    "fields": {
+      "nombre": "Bartido"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 13,
+    "fields": {
+      "nombre": "Bebidas"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 14,
+    "fields": {
+      "nombre": "Bebidas Alcoholicas"
+    }
+  },
+  {
+    "model": "inventarioHandler.categoria",
+    "pk": 15,
+    "fields": {
+      "nombre": "Bebidas calientes"
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 1,
+    "fields": {
+      "nombre": "Lomo de res",
+      "descripcion": "arroz, papas fritas, ensalada, menestra",
+      "disponible": true,
+      "precio": "4.00",
+      "categoria": 1
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 2,
+    "fields": {
+      "nombre": "Lomo de cerdo",
+      "descripcion": "arroz, papas fritas, ensalada, menestra",
+      "disponible": true,
+      "precio": "4.00",
+      "categoria": 1
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 3,
+    "fields": {
+      "nombre": "Chuleta de cerdo",
+      "descripcion": "arroz, papas fritas, ensalada, menestra",
+      "disponible": true,
+      "precio": "4.00",
+      "categoria": 1
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 4,
+    "fields": {
+      "nombre": "Pechuga a la plancha",
+      "descripcion": "arroz, papas fritas, ensalada, menestra",
+      "disponible": true,
+      "precio": "4.00",
+      "categoria": 1
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 5,
+    "fields": {
+      "nombre": "Lomo mixto",
+      "descripcion": "arroz, papas fritas, ensalada, menestra",
+      "disponible": true,
+      "precio": "6.00",
+      "categoria": 1
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 6,
+    "fields": {
+      "nombre": "Lomo de tilapia",
+      "descripcion": "arroz, papas fritas, ensalada",
+      "disponible": true,
+      "precio": "5.00",
+      "categoria": 1
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 7,
+    "fields": {
+      "nombre": "Porci\u00f3n de arroz",
+      "descripcion": "Porci\u00f3n de arroz",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 2
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 8,
+    "fields": {
+      "nombre": "Porci\u00f3n de papas",
+      "descripcion": "Porci\u00f3n de papas",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 2
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 9,
+    "fields": {
+      "nombre": "Porci\u00f3n de menestra",
+      "descripcion": "Porci\u00f3n de menestra",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 2
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 10,
+    "fields": {
+      "nombre": "Porci\u00f3n de chorizo",
+      "descripcion": "Porci\u00f3n de menestra",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 2
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 11,
+    "fields": {
+      "nombre": "Porci\u00f3n de ensalada",
+      "descripcion": "Porci\u00f3n de ensalada",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 2
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 12,
+    "fields": {
+      "nombre": "1/8 Pollo",
+      "descripcion": "arroz, papas fritas, ensalada",
+      "disponible": true,
+      "precio": "2.75",
+      "categoria": 3
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 13,
+    "fields": {
+      "nombre": "1/4 Pollo",
+      "descripcion": "arroz, papas fritas, ensalada",
+      "disponible": true,
+      "precio": "4.00",
+      "categoria": 3
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 14,
+    "fields": {
+      "nombre": "1/2 Pollo",
+      "descripcion": "arroz, papas fritas, ensalada",
+      "disponible": true,
+      "precio": "8.00",
+      "categoria": 3
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 15,
+    "fields": {
+      "nombre": "Pollo Entero",
+      "descripcion": "arroz, papas fritas, ensalada",
+      "disponible": true,
+      "precio": "15.00",
+      "categoria": 3
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 16,
+    "fields": {
+      "nombre": "Pollo Entero (solo)",
+      "descripcion": "Pollo",
+      "disponible": true,
+      "precio": "14.00",
+      "categoria": 3
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 17,
+    "fields": {
+      "nombre": "Papa con salchicha",
+      "descripcion": "Plato de papas fritas con salchicha",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 18,
+    "fields": {
+      "nombre": "Papa con nuggets",
+      "descripcion": "Plato de papas fritas con nuggets",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 19,
+    "fields": {
+      "nombre": "Papa con huevo",
+      "descripcion": "Plato de papas fritas con huevo",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 20,
+    "fields": {
+      "nombre": "Papa con queso mozzarella",
+      "descripcion": "Plato de papas fritas con queso mozzarella",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 21,
+    "fields": {
+      "nombre": "Papa con carne de hamburguesa",
+      "descripcion": "Plato de papas fritas con carne de hamburguesa",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 22,
+    "fields": {
+      "nombre": "Papa con pechuga apanada",
+      "descripcion": "Plato de papas fritas con pechuga apanada",
+      "disponible": true,
+      "precio": "1.75",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 23,
+    "fields": {
+      "nombre": "Papa con presa de pollo",
+      "descripcion": "Plato de papas fritas con presa de pollo",
+      "disponible": true,
+      "precio": "2.50",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 24,
+    "fields": {
+      "nombre": "Papa con chorizo",
+      "descripcion": "Plato de papas fritas con chorizo",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 4
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 25,
+    "fields": {
+      "nombre": "Simple de res",
+      "descripcion": "Hamburguesa con carne de res, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 26,
+    "fields": {
+      "nombre": "Doble de res",
+      "descripcion": "Hamburguesa con carne doble de res,  queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 27,
+    "fields": {
+      "nombre": "Mixta",
+      "descripcion": "Hamburguesa con carne de res, carne de pollo, queso , lechuga y tomate",
+      "disponible": true,
+      "precio": "2.50",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 28,
+    "fields": {
+      "nombre": "Hawaiana",
+      "descripcion": "Hamburguesa con carne de res, pi\u00f1a, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 29,
+    "fields": {
+      "nombre": "Hamburguesa de pollo",
+      "descripcion": "Hamburguesa con carne de pollo, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 30,
+    "fields": {
+      "nombre": "Doble de pollo",
+      "descripcion": "Hamburguesa con carne doble de pollo, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.75",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 31,
+    "fields": {
+      "nombre": "Res con tocino",
+      "descripcion": "Hamburguesa con carne de res, tocino, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 32,
+    "fields": {
+      "nombre": "Res con chorizo",
+      "descripcion": "Hamburguesa con carne de res, chorizo, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.50",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 33,
+    "fields": {
+      "nombre": "Res con huevo",
+      "descripcion": "Hamburguesa con carne de res, huevo, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 34,
+    "fields": {
+      "nombre": "Res con salami",
+      "descripcion": "Hamburguesa con carne de res, salami, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 35,
+    "fields": {
+      "nombre": "Res con papa",
+      "descripcion": "Hamburguesa con carne de res, porci\u00f3n de papa, queso, lechuga y tomate",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 5
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 36,
+    "fields": {
+      "nombre": "Jam\u00f3n",
+      "descripcion": "Sanduche de Jam\u00f3n",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 6
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 37,
+    "fields": {
+      "nombre": "Queso",
+      "descripcion": "Sanduche de Queso",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 6
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 38,
+    "fields": {
+      "nombre": "Mixto",
+      "descripcion": "Sanduche de Queso y Jam\u00f3n",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 6
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 39,
+    "fields": {
+      "nombre": "Pollo",
+      "descripcion": "Sanduche de Pollo",
+      "disponible": true,
+      "precio": "1.75",
+      "categoria": 6
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 40,
+    "fields": {
+      "nombre": "Queso",
+      "descripcion": "Tostada de Queso",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 7
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 41,
+    "fields": {
+      "nombre": "Jam\u00f3n",
+      "descripcion": "Tostada de Jam\u00f3n",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 7
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 42,
+    "fields": {
+      "nombre": "Mixto",
+      "descripcion": "Tostada de Queso y Jam\u00f3n",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 7
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 43,
+    "fields": {
+      "nombre": "Simple",
+      "descripcion": "Pan, Salchicha, Queso, Papas y lechuga",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 8
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 44,
+    "fields": {
+      "nombre": "Doble",
+      "descripcion": "Pan, Salchicha doble, Queso, Papas y lechuga",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 8
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 45,
+    "fields": {
+      "nombre": "Con chantilly",
+      "descripcion": "Ensalada de Frutas con crema chantilly",
+      "disponible": true,
+      "precio": "1.75",
+      "categoria": 9
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 46,
+    "fields": {
+      "nombre": "Con yogurt",
+      "descripcion": "Ensalada de Frutas con Yogurt",
+      "disponible": true,
+      "precio": "1.75",
+      "categoria": 9
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 47,
+    "fields": {
+      "nombre": "Con helado",
+      "descripcion": "Ensalada de Frutas con helado",
+      "disponible": true,
+      "precio": "2.75",
+      "categoria": 9
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 48,
+    "fields": {
+      "nombre": "Con helado doble",
+      "descripcion": "Ensalada de Frutas con helado doble",
+      "disponible": true,
+      "precio": "3.50",
+      "categoria": 9
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 49,
+    "fields": {
+      "nombre": "Duraznos con crema",
+      "descripcion": "Duraznos con crema",
+      "disponible": true,
+      "precio": "2.25",
+      "categoria": 10
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 50,
+    "fields": {
+      "nombre": "Fresas con crema",
+      "descripcion": "Fresas con crema",
+      "disponible": true,
+      "precio": "2.25",
+      "categoria": 10
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 51,
+    "fields": {
+      "nombre": "Tres leches",
+      "descripcion": "Torta de tres leches",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 10
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 52,
+    "fields": {
+      "nombre": "Helados con queso",
+      "descripcion": "Helados con queso",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 10
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 53,
+    "fields": {
+      "nombre": "Jugo de babaco",
+      "descripcion": "Jugo de babaco",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 54,
+    "fields": {
+      "nombre": "Jugo de frutilla",
+      "descripcion": "Jugo de frutilla",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 55,
+    "fields": {
+      "nombre": "Jugo de tomate",
+      "descripcion": "Jugo de tomate de \u00e1rbol",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 56,
+    "fields": {
+      "nombre": "Jugo de mango",
+      "descripcion": "Jugo de mango",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 57,
+    "fields": {
+      "nombre": "Jugo de mora",
+      "descripcion": "Jugo de mora",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 58,
+    "fields": {
+      "nombre": "Jugo de melon",
+      "descripcion": "Jugo de melon",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 59,
+    "fields": {
+      "nombre": "Jugo de papaya",
+      "descripcion": "Jugo de papaya",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 60,
+    "fields": {
+      "nombre": "Jugo depi\u00f1a",
+      "descripcion": "Jugo depi\u00f1a",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 61,
+    "fields": {
+      "nombre": "Jugo de maracuya",
+      "descripcion": "Jugo de maracuya",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 62,
+    "fields": {
+      "nombre": "Jugo de tamarindo",
+      "descripcion": "Jugo de tamarindo",
+      "disponible": false,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 63,
+    "fields": {
+      "nombre": "Jugo de sandia",
+      "descripcion": "Jugo de sandia",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 64,
+    "fields": {
+      "nombre": "Jugo de tutifruti",
+      "descripcion": "Jugo de tutifruti",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 65,
+    "fields": {
+      "nombre": "Jugo de naranja",
+      "descripcion": "Jugo de naranja",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 11
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 66,
+    "fields": {
+      "nombre": "Bartido de babaco",
+      "descripcion": "Bartido de babaco",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 67,
+    "fields": {
+      "nombre": "Bartido de frutilla",
+      "descripcion": "Bartido de frutilla",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 68,
+    "fields": {
+      "nombre": "Bartido de tomate",
+      "descripcion": "Bartido de tomate de \u00e1rbol",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 69,
+    "fields": {
+      "nombre": "Bartido de mango",
+      "descripcion": "Bartido de mango",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 70,
+    "fields": {
+      "nombre": "Bartido de mora",
+      "descripcion": "Bartido de mora",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 71,
+    "fields": {
+      "nombre": "Bartido de mel\u00f3n",
+      "descripcion": "Bartido de mel\u00f3n",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 72,
+    "fields": {
+      "nombre": "Bartido de papaya",
+      "descripcion": "Bartido de papaya",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 73,
+    "fields": {
+      "nombre": "Bartido de pi\u00f1a",
+      "descripcion": "Bartido de pi\u00f1a",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 74,
+    "fields": {
+      "nombre": "Bartido de maracuya",
+      "descripcion": "Bartido de maracuya",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 75,
+    "fields": {
+      "nombre": "Bartido de banano",
+      "descripcion": "Bartido de banano",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 76,
+    "fields": {
+      "nombre": "Bartido de tutifruti",
+      "descripcion": "Bartido de tutifruti",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 12
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 77,
+    "fields": {
+      "nombre": "Agua",
+      "descripcion": "Agua",
+      "disponible": true,
+      "precio": "0.50",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 78,
+    "fields": {
+      "nombre": "Agua mineral",
+      "descripcion": "Guitic",
+      "disponible": true,
+      "precio": "0.70",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 79,
+    "fields": {
+      "nombre": "Gaseosas",
+      "descripcion": "Cocacola, Fiora, Sprite, Fanta",
+      "disponible": true,
+      "precio": "0.60",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 80,
+    "fields": {
+      "nombre": "Fuzetea",
+      "descripcion": "Fuzetea",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 81,
+    "fields": {
+      "nombre": "Limonada",
+      "descripcion": "Limonada",
+      "disponible": true,
+      "precio": "0.50",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 82,
+    "fields": {
+      "nombre": "Jarra de Limonada",
+      "descripcion": "Jarra de Limonada",
+      "disponible": true,
+      "precio": "3.00",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 83,
+    "fields": {
+      "nombre": "Jarra de maracuya",
+      "descripcion": "Jarra de maracuya",
+      "disponible": true,
+      "precio": "3.00",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 84,
+    "fields": {
+      "nombre": "Jarra de tamarindo",
+      "descripcion": "Jarra de tamarindo",
+      "disponible": false,
+      "precio": "3.00",
+      "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 85,
+    "fields": {
+      "nombre": "Cerveza pilsener",
+      "descripcion": "Cerveza pilsener",
+      "disponible": true,
+      "precio": "1.75",
+      "categoria": 14
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 86,
+    "fields": {
+      "nombre": "Cerveza club personal",
+      "descripcion": "Cerveza club personal",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 14
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 87,
+    "fields": {
+      "nombre": "Cerveza club grande",
+      "descripcion": "Cerveza club grande",
+      "disponible": true,
+      "precio": "2.00",
+      "categoria": 14
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 88,
+    "fields": {
+      "nombre": "Agua aromatica",
+      "descripcion": "Agua aromatica",
+      "disponible": true,
+      "precio": "0.50",
+      "categoria": 15
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 89,
+    "fields": {
+      "nombre": "Cafe",
+      "descripcion": "Cafe",
+      "disponible": true,
+      "precio": "0.50",
+      "categoria": 15
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 90,
+    "fields": {
+      "nombre": "Capuchino",
+      "descripcion": "Capuchino",
+      "disponible": true,
+      "precio": "1.00",
+      "categoria": 15
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 91,
+    "fields": {
+      "nombre": "Mokachino",
+      "descripcion": "Mokachino",
+      "disponible": true,
+      "precio": "1.25",
+      "categoria": 15
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 92,
+    "fields": {
+      "nombre": "Cafe de la vi\u00f1a",
+      "descripcion": "Cafe de la vi\u00f1a",
+      "disponible": true,
+      "precio": "1.50",
+      "categoria": 15
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 93,
+    "fields": {
+      "nombre": "Milkshake",
+      "descripcion": "Batido de Helado",
+      "disponible": true,
+      "precio": "2.50",
+      "categoria": 13
+    }
+  }
+]

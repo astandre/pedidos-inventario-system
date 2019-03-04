@@ -1,7 +1,7 @@
 from django.db import models
 from inventarioHandler.models import Producto
 from .utils import constants
-
+from datetime import datetime
 
 # Create your models here.
 
@@ -46,8 +46,10 @@ class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
     mesa = models.CharField(max_length=2, choices=constants.MESA_CHOICES, blank=False, default=constants.A1)
-    # fecha = models.DateField(auto_now_add=True)
-    estado = models.CharField(max_length=1, choices=constants.ESTADO_CHOICES, blank=False, default=constants.PREPARANDO)
+    fecha = models.DateTimeField(default=datetime.now)
+    pagado = models.BooleanField(default=False)
+    terminado = models.BooleanField(default=False)
+    tiempo_total = models.DateTimeField(blank=True, null=True)
     total = models.DecimalField(null=False, max_digits=5, decimal_places=2)
 
     class Meta:
@@ -65,6 +67,7 @@ class Item(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField(blank=False, null=False, default=1)
     especificacion = models.CharField(max_length=200, null=True, blank=True)
+    llevar = models.BooleanField(default=False)
     precio = models.DecimalField(null=False, max_digits=5, decimal_places=2)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)
 
