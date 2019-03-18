@@ -16,18 +16,17 @@
                 {% for pedido in pedidos %}
                     <div class="col-sm-6">
                         <div class="card">
-                            <div class="card-body">
+                            <div class="card-body table-responsive" >
                                 <h5 class="card-title">#{{ pedido.id_pedido }}</h5>
                                 <h5 class="card-title"> Mesa: {{ pedido.get_mesa_display }}</h5>
-                                <p class="card-text">Estado: {{ pedido.get_estado_display }} </p>
                                 {% if pedido.items.all %}
                                     <table class="table table-sm" id="items_table">
                                         <thead>
                                         <tr>
-                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">#</th>
                                             <th scope="col">Item</th>
                                             <th scope="col">Especificacion</th>
-
+                                            <th scope="col">Llevar</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -36,6 +35,17 @@
                                                 <td>{{ item.cantidad }}</td>
                                                 <td>{{ item.producto.nombre }}</td>
                                                 <td>{{ item.especificacion }}</td>
+                                                {% if item.llevar %}
+                                                    <td>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                             viewBox="0 0 24 24">
+                                                            <path fill="none" d="M0 0h24v24H0z"/>
+                                                            <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                                                        </svg>
+                                                    </td>
+                                                {% else %}
+                                                    <td></td>
+                                                {% endif %}
                                             </tr>
                                         {% endfor %}
                                         </tbody>

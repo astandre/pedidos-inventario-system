@@ -49,7 +49,7 @@ class Pedido(models.Model):
     fecha = models.DateTimeField(default=datetime.now)
     pagado = models.BooleanField(default=False)
     terminado = models.BooleanField(default=False)
-    tiempo_total = models.DateTimeField(blank=True, null=True)
+    tiempo_total = models.TimeField(blank=True, null=True)
     total = models.DecimalField(null=False, max_digits=5, decimal_places=2)
 
     class Meta:

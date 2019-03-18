@@ -1,6 +1,5 @@
 from rest_framework import serializers
 from .models import *
-import logging
 
 
 #
@@ -15,16 +14,23 @@ class PedidoSerializer(serializers.Serializer):
         pass
 
     def create(self, validated_data):
-
+        print(validated_data)
         try:
             cliente = Cliente.objects.get(cedula=9999999999)
         except Cliente.DoesNotExist:
             print("Cliente final added.")
             Cliente(cedula=9999999999, nombres="CONSUMIDOR", apellidos="FINAL").save()
         else:
-            pedido = Pedido(mesa=validated_data["mesa"], estado="P", cliente=cliente, total=validated_data["total"])
-            pedido.save()
-            # print(pedido.id_pedido)
+            if "id" not in validated_data:
+                pedido = Pedido(mesa=validated_data["mesa"], pagado=False, terminado=False, cliente=cliente,
+                                total=validated_data["total"])
+                pedido.save()
+            else:
+                pedido = Pedido.objects.get(id_pedido=validated_data["id"])
+                pedido.mesa = validated_data["mesa"]
+                pedido.total = validated_data["total"]
+                pedido.save()
+                Item.objects.filter(pedido=pedido).delete()
 
             for item in validated_data["items"]:
                 item["precio"] = item["precio"].replace(",", ".")
@@ -41,7 +47,7 @@ class PedidoSerializer(serializers.Serializer):
                     else:
 
                         new_item = Item(producto=producto, cantidad=item["cantidad"], precio=item["precio"],
-                                        especificacion=item["esp"], pedido=pedido)
+                                        especificacion=item["esp"], pedido=pedido, llevar=item["llevar"])
                         print(new_item)
                         new_item.save()
             return pedido

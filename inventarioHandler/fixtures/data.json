@@ -10,7 +10,7 @@
     "model": "inventarioHandler.categoria",
     "pk": 2,
     "fields": {
-      "nombre": "Extras (Platos Fuertes)"
+      "nombre": "Extras"
     }
   },
   {
@@ -45,7 +45,7 @@
     "model": "inventarioHandler.categoria",
     "pk": 7,
     "fields": {
-      "nombre": "Tostada"
+      "nombre": "Tostadas"
     }
   },
   {
@@ -59,7 +59,7 @@
     "model": "inventarioHandler.categoria",
     "pk": 9,
     "fields": {
-      "nombre": "Ensalada de Frutas"
+      "nombre": "Ensaladas de Frutas"
     }
   },
   {
@@ -80,14 +80,14 @@
     "model": "inventarioHandler.categoria",
     "pk": 12,
     "fields": {
-      "nombre": "Bartido"
+      "nombre": "Batido"
     }
   },
   {
     "model": "inventarioHandler.categoria",
     "pk": 13,
     "fields": {
-      "nombre": "Bebidas"
+      "nombre": "Bebidas frias"
     }
   },
   {
@@ -372,7 +372,7 @@
     "model": "inventarioHandler.producto",
     "pk": 25,
     "fields": {
-      "nombre": "Simple de res",
+      "nombre": "Hamburguesa Simple de res",
       "descripcion": "Hamburguesa con carne de res, queso, lechuga y tomate",
       "disponible": true,
       "precio": "1.50",
@@ -383,7 +383,7 @@
     "model": "inventarioHandler.producto",
     "pk": 26,
     "fields": {
-      "nombre": "Doble de res",
+      "nombre": "Hamburguesa Doble de res",
       "descripcion": "Hamburguesa con carne doble de res,  queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.00",
@@ -394,7 +394,7 @@
     "model": "inventarioHandler.producto",
     "pk": 27,
     "fields": {
-      "nombre": "Mixta",
+      "nombre": "Hamburguesa Mixta",
       "descripcion": "Hamburguesa con carne de res, carne de pollo, queso , lechuga y tomate",
       "disponible": true,
       "precio": "2.50",
@@ -405,7 +405,7 @@
     "model": "inventarioHandler.producto",
     "pk": 28,
     "fields": {
-      "nombre": "Hawaiana",
+      "nombre": "Hamburguesa Hawaiana",
       "descripcion": "Hamburguesa con carne de res, pi\u00f1a, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.00",
@@ -427,7 +427,7 @@
     "model": "inventarioHandler.producto",
     "pk": 30,
     "fields": {
-      "nombre": "Doble de pollo",
+      "nombre": "Hamburguesa Doble de pollo",
       "descripcion": "Hamburguesa con carne doble de pollo, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.75",
@@ -438,7 +438,7 @@
     "model": "inventarioHandler.producto",
     "pk": 31,
     "fields": {
-      "nombre": "Res con tocino",
+      "nombre": "Hamburguesa Res con tocino",
       "descripcion": "Hamburguesa con carne de res, tocino, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.00",
@@ -449,7 +449,7 @@
     "model": "inventarioHandler.producto",
     "pk": 32,
     "fields": {
-      "nombre": "Res con chorizo",
+      "nombre": "Hamburguesa Res con chorizo",
       "descripcion": "Hamburguesa con carne de res, chorizo, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.50",
@@ -460,7 +460,7 @@
     "model": "inventarioHandler.producto",
     "pk": 33,
     "fields": {
-      "nombre": "Res con huevo",
+      "nombre": "Hamburguesa Res con huevo",
       "descripcion": "Hamburguesa con carne de res, huevo, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.00",
@@ -471,7 +471,7 @@
     "model": "inventarioHandler.producto",
     "pk": 34,
     "fields": {
-      "nombre": "Res con salami",
+      "nombre": "Hamburguesa Res con salami",
       "descripcion": "Hamburguesa con carne de res, salami, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.00",
@@ -482,7 +482,7 @@
     "model": "inventarioHandler.producto",
     "pk": 35,
     "fields": {
-      "nombre": "Res con papa",
+      "nombre": "Hamburguesa Res con papa",
       "descripcion": "Hamburguesa con carne de res, porci\u00f3n de papa, queso, lechuga y tomate",
       "disponible": true,
       "precio": "2.00",
@@ -570,7 +570,7 @@
     "model": "inventarioHandler.producto",
     "pk": 43,
     "fields": {
-      "nombre": "Simple",
+      "nombre": "Hot Dog simple",
       "descripcion": "Pan, Salchicha, Queso, Papas y lechuga",
       "disponible": true,
       "precio": "1.50",
@@ -581,7 +581,7 @@
     "model": "inventarioHandler.producto",
     "pk": 44,
     "fields": {
-      "nombre": "Doble",
+      "nombre": "Hot Dog doble",
       "descripcion": "Pan, Salchicha doble, Queso, Papas y lechuga",
       "disponible": true,
       "precio": "2.00",
@@ -592,7 +592,7 @@
     "model": "inventarioHandler.producto",
     "pk": 45,
     "fields": {
-      "nombre": "Con chantilly",
+      "nombre": "Ensalada de frutas con chantilly",
       "descripcion": "Ensalada de Frutas con crema chantilly",
       "disponible": true,
       "precio": "1.75",
@@ -603,7 +603,7 @@
     "model": "inventarioHandler.producto",
     "pk": 46,
     "fields": {
-      "nombre": "Con yogurt",
+      "nombre": "Ensalada de frutas con yogurt",
       "descripcion": "Ensalada de Frutas con Yogurt",
       "disponible": true,
       "precio": "1.75",
@@ -614,7 +614,7 @@
     "model": "inventarioHandler.producto",
     "pk": 47,
     "fields": {
-      "nombre": "Con helado",
+      "nombre": "Ensalada de frutas con helado",
       "descripcion": "Ensalada de Frutas con helado",
       "disponible": true,
       "precio": "2.75",
@@ -625,7 +625,7 @@
     "model": "inventarioHandler.producto",
     "pk": 48,
     "fields": {
-      "nombre": "Con helado doble",
+      "nombre": "Ensalada de frutas con helado doble",
       "descripcion": "Ensalada de Frutas con helado doble",
       "disponible": true,
       "precio": "3.50",
@@ -823,7 +823,7 @@
     "model": "inventarioHandler.producto",
     "pk": 66,
     "fields": {
-      "nombre": "Bartido de babaco",
+      "nombre": "Batido de babaco",
       "descripcion": "Bartido de babaco",
       "disponible": true,
       "precio": "1.25",
@@ -834,7 +834,7 @@
     "model": "inventarioHandler.producto",
     "pk": 67,
     "fields": {
-      "nombre": "Bartido de frutilla",
+      "nombre": "Batido de frutilla",
       "descripcion": "Bartido de frutilla",
       "disponible": true,
       "precio": "1.25",
@@ -845,7 +845,7 @@
     "model": "inventarioHandler.producto",
     "pk": 68,
     "fields": {
-      "nombre": "Bartido de tomate",
+      "nombre": "Batido de tomate",
       "descripcion": "Bartido de tomate de \u00e1rbol",
       "disponible": true,
       "precio": "1.25",
@@ -856,7 +856,7 @@
     "model": "inventarioHandler.producto",
     "pk": 69,
     "fields": {
-      "nombre": "Bartido de mango",
+      "nombre": "Batido de mango",
       "descripcion": "Bartido de mango",
       "disponible": true,
       "precio": "1.25",
@@ -867,7 +867,7 @@
     "model": "inventarioHandler.producto",
     "pk": 70,
     "fields": {
-      "nombre": "Bartido de mora",
+      "nombre": "Batido de mora",
       "descripcion": "Bartido de mora",
       "disponible": true,
       "precio": "1.25",
@@ -878,7 +878,7 @@
     "model": "inventarioHandler.producto",
     "pk": 71,
     "fields": {
-      "nombre": "Bartido de mel\u00f3n",
+      "nombre": "Batido de mel\u00f3n",
       "descripcion": "Bartido de mel\u00f3n",
       "disponible": true,
       "precio": "1.25",
@@ -889,7 +889,7 @@
     "model": "inventarioHandler.producto",
     "pk": 72,
     "fields": {
-      "nombre": "Bartido de papaya",
+      "nombre": "Batido de papaya",
       "descripcion": "Bartido de papaya",
       "disponible": true,
       "precio": "1.25",
@@ -900,7 +900,7 @@
     "model": "inventarioHandler.producto",
     "pk": 73,
     "fields": {
-      "nombre": "Bartido de pi\u00f1a",
+      "nombre": "Batido de pi\u00f1a",
       "descripcion": "Bartido de pi\u00f1a",
       "disponible": true,
       "precio": "1.25",
@@ -911,7 +911,7 @@
     "model": "inventarioHandler.producto",
     "pk": 74,
     "fields": {
-      "nombre": "Bartido de maracuya",
+      "nombre": "Batido de maracuya",
       "descripcion": "Bartido de maracuya",
       "disponible": true,
       "precio": "1.25",
@@ -922,7 +922,7 @@
     "model": "inventarioHandler.producto",
     "pk": 75,
     "fields": {
-      "nombre": "Bartido de banano",
+      "nombre": "Batido de banano",
       "descripcion": "Bartido de banano",
       "disponible": true,
       "precio": "1.25",
@@ -933,7 +933,7 @@
     "model": "inventarioHandler.producto",
     "pk": 76,
     "fields": {
-      "nombre": "Bartido de tutifruti",
+      "nombre": "Batido de tutifruti",
       "descripcion": "Bartido de tutifruti",
       "disponible": true,
       "precio": "1.25",
@@ -966,7 +966,7 @@
     "model": "inventarioHandler.producto",
     "pk": 79,
     "fields": {
-      "nombre": "Gaseosas",
+      "nombre": "Gaseosas personal",
       "descripcion": "Cocacola, Fiora, Sprite, Fanta",
       "disponible": true,
       "precio": "0.60",
@@ -988,7 +988,7 @@
     "model": "inventarioHandler.producto",
     "pk": 81,
     "fields": {
-      "nombre": "Limonada",
+      "nombre": "Limonada personal",
       "descripcion": "Limonada",
       "disponible": true,
       "precio": "0.50",
@@ -1125,6 +1125,28 @@
       "disponible": true,
       "precio": "2.50",
       "categoria": 13
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 94,
+    "fields": {
+      "nombre": "Porcion de huevo",
+      "descripcion": "Un huevo",
+      "disponible": true,
+      "precio": "0.50",
+      "categoria": 2
+    }
+  },
+  {
+    "model": "inventarioHandler.producto",
+    "pk": 95,
+    "fields": {
+      "nombre": "Porcion de nuggets",
+      "descripcion": "Un nugget",
+      "disponible": true,
+      "precio": "0.35",
+      "categoria": 2
     }
   }
 ]
