@@ -3,14 +3,14 @@ from django.http import HttpResponse, JsonResponse
 from django.template import loader
 from rest_framework import status
 from django.shortcuts import redirect
-from inventarioHandler.models import Categoria
+from inventarioHandler.models import Categoria, Producto
 from pedidosHandler.models import Pedido
 from .forms import PedidoForm
 from django.db.models import Q
 from rest_framework.decorators import api_view
 from django.contrib import messages
 from .serializers import PedidoSerializer
-from .utils import constants
+import datetime
 
 
 # Create your views here.
@@ -18,20 +18,40 @@ from .utils import constants
 
 @login_required
 def pedido_nuevo(request):
-    categorias = Categoria.objects.all().order_by("nombre")
     template = loader.get_template('pedidosHandler/pedido_nuevo.html')
     form = PedidoForm()
-    # TODO instead of form send data to render manually
     context = {
         'form': form,
-        'categorias': categorias,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+@api_view(['GET'])
+def productos_todos_api(request):
+    if request.method == 'GET':
+        categorias = list(Categoria.objects.values().all().order_by("nombre"))
+
+        for categoria in categorias:
+            categoria["productos"] = list(Producto.objects.values().filter(categoria=categoria["id_categoria"]))
+
+        return JsonResponse({"categorias": categorias}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"Error": "Only get Allowed"}, status=status.HTTP_403_FORBIDDEN)
+
+
+@login_required
+def pedidos(request):
+    pedidos_list = Pedido.objects.filter(pagado=False).order_by("pagado")
+    template = loader.get_template('pedidosHandler/pedidos.html')
+    context = {
+        'pedidos': pedidos_list,
     }
     return HttpResponse(template.render(context, request))
 
 
 @login_required
-def pedidos(request):
-    pedidos_list = Pedido.objects.filter(~Q(estado=constants.PAGADO))
+def pedidos_todos(request):
+    pedidos_list = Pedido.objects.all().order_by("fecha")
     template = loader.get_template('pedidosHandler/pedidos.html')
     context = {
         'pedidos': pedidos_list,
@@ -40,7 +60,7 @@ def pedidos(request):
 
 
 def cocina(request):
-    pedidos_list = Pedido.objects.filter(estado=constants.PREPARANDO)
+    pedidos_list = Pedido.objects.filter(terminado=False)
     template = loader.get_template('pedidosHandler/cocina.html')
     context = {
         'pedidos': pedidos_list,
@@ -69,7 +89,7 @@ def pedido_update_estado_pagado(request, id_pedido):
     except Pedido.DoesNotExist:
         messages.warning(request, "Pedido no encontrado")
     else:
-        pedido.estado = constants.PAGADO
+        pedido.pagado = True
         pedido.save()
         messages.success(request, "Pedido finalizado correctamente")
 
@@ -82,7 +102,19 @@ def pedido_update_estado_completo(request, id_pedido):
     except Pedido.DoesNotExist:
         messages.warning(request, "Pedido no encontrado")
     else:
-        pedido.estado = constants.COMPLETO
+        # actualizando estado de terminado y tiempo que tomo el pedido
+        pedido.terminado = True
+
+        tiempo_inicio = pedido.fecha.timestamp()
+        ahora = datetime.datetime.now().timestamp()
+        tiempo_total = ahora - tiempo_inicio
+        # print(ahora)
+        # print(tiempo_inicio)
+        # print(datetime.datetime.utcfromtimestamp(tiempo_total).strftime('%H:%M:%S'))
+        tiempo_total = datetime.datetime.utcfromtimestamp(tiempo_total)
+
+        pedido.tiempo_total = tiempo_total
+
         pedido.save()
         messages.success(request, "Pedido terminado correctamente")
 
@@ -100,9 +132,9 @@ def pedido_nuevo_api(request):
                 print(pedido)
                 resp["id-orden"] = pedido.id_pedido
             else:
-                old_pedido = Pedido.objects.get(id_pedido=serializer.validated_data["id"])
-                print("Must update pedido")
-                print(old_pedido)
+                pedido = serializer.save()
+                print(pedido)
+                resp["id-orden"] = pedido.id_pedido
 
             return JsonResponse(resp, status=status.HTTP_200_OK)
         else:

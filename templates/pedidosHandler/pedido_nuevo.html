@@ -14,6 +14,8 @@
     <div class="row">
         <div class="col-md-4">
             {#    TODO make this form look better#}
+            {#            TODO deactivate this when pedido is pagado#}
+
             {{ form.as_table }}
         </div>
         <div class="col-md-2">
@@ -36,128 +38,105 @@
         </div>
     </div>
     <div class="row">
+
         <div class="col-md-5">
             <h2>Productos disponibles</h2>
-            <table class="table table-sm">
-                <thead>
-                <tr>
-                    <th scope="col" style="display:none;">Codigo</th>
-                    <th scope="col">Item</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Añadir</th>
-                </tr>
-                </thead>
-                <tbody>
-                {% if categorias %}
-                    {% for categoria in categorias %}
-                        <tr>
-                            <td align="center" colspan="4">{{ categoria.nombre }}</td>
-                        </tr>
-                        {% if categoria.productos.all %}
-                            {% for producto in categoria.productos.all %}
-                                {% if not producto.disponible %}
-                                    <tr class="table-danger">
-                                        {% else %}
-                                    <tr>
-                                {% endif %}
-                            <td style="display:none;">{{ producto.id_producto }}</td>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.descripcion }}</td>
-                            <td>{{ producto.precio }}</td>
-                            <td>
-                                {% if not producto.disponible %}
-                                    <button type="button" class="btn btn-primary"
-                                            disabled>
-                                        Añadir
-                                    </button>
-                                {% else %}
-                                    <button type="button" class="btn btn-primary"
-                                            onclick="addItem(this)">
-                                        Añadir
-                                    </button>
-                                {% endif %}
+            <div id="accordion" style="overflow-y: scroll; height: 500px">
 
-                            </td>
-                            </tr>
-                            {% endfor %}
-                        {% endif %}
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td align="center" colspan="6">No existen productos agregados aun</td>
-                    </tr>
-                {% endif %}
-                </tbody>
-            </table>
+            </div>
         </div>
         <div class="col-md-7">
             <h2>Pedido</h2>
-            <table class="table table-sm" id="items_table">
-                <thead>
-                <tr>
-                    <th scope="col" style="display:none;">Codigo</th>
-                    <th scope="col">#</th>
-                    <th scope="col">Item</th>
-                    <th scope="col">Especificacion</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Subtotal</th>
-                    <th scope="col">Eliminar</th>
-                </tr>
-                </thead>
-                <tbody>
+            <div class="table-responsive" style="overflow-y: scroll; height: 500px">
 
-                {% if pedido %}
-                    {% for item in pedido.items.all %}
-                        <tr>
-                            <td style="display:none;" class="id-item">{{ item.producto.id_producto }}</td>
-                            <td class="cantidad-item">
-                                <input class="cantidad-item" type="number" min="0" pattern="[0-9]"
-                                       value="{{ item.cantidad }}" readonly>
-                            </td>
-                            <td>{{ item.producto.nombre }}</td>
-                            <td class="esp-item">{{ item.especificacion }}</td>
-                            <td class="precio-item">{{ item.precio }}</td>
-                            <td class="sub-item">{{ item.precio }}</td>
-                            <td>
-                                <button type="button" class="btn btn-danger" onclick="deleteRow()" disabled>Eliminar
-                                </button>
-                            </td>
-
-                        </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr id="initialmessage">
-                        <td align="center" colspan="6">Agrega nuevos productos ahora!</td>
+                <table class="table table-sm" id="items_table">
+                    <thead>
+                    <tr>
+                        <th scope="col" style=" display:none;">Codigo</th>
+                        <th scope="col">#</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Especificacion</th>
+                        <th scope="col">Precio</th>
+                        <th scope="col">Subtotal</th>
+                        <th scope="col">Llevar</th>
+                        <th scope="col">Eliminar</th>
                     </tr>
-                {% endif %}
+                    </thead>
+                    <tbody>
+
+                    {% if pedido %}
+                        {% for item in pedido.items.all %}
+                            <tr>
+                                <td style="display:none;" class="id-item">{{ item.producto.id_producto }}</td>
+                                <td class="cantidad-item">
+                                    <input class="cantidad-item" type="number" min="0" pattern="[0-9]"
+                                           value="{{ item.cantidad }}" readonly style="width: 40px">
+                                </td>
+                                <td>{{ item.producto.nombre }}</td>
+                                <td class="esp-item">{{ item.especificacion }}</td>
+                                <td class="precio-item">{{ item.precio }}</td>
+                                <td class="sub-item">{{ item.precio }}</td>
+                                <td style="width: 10px">
+                                    {% if item.llevar %}
+                                        <input type="checkbox" checked class="llevar"
+                                               {% if pedido.pagado %}disabled{% endif %}>
+
+                                    {% else %}
+                                        <input type="checkbox" class="llevar"
+                                               {% if pedido.pagado %}disabled{% endif %}>
+
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <button type="button" id="btn-eliminar" class="btn btn-danger" onclick="deleteRow()"
+                                            {% if pedido.pagado %}disabled{% endif %}>Eliminar
+                                    </button>
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr id="initialmessage">
+                            <td align="center" colspan="6">Agrega nuevos productos ahora!</td>
+                        </tr>
+                    {% endif %}
 
 
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-2 offset-md-6 ">
-            <button type="button" class="btn btn-info btn-lg btn-block" id="verificar" onclick="enviarOrden()">
+
+        <div class="col-md-2 offset-md-6 col-sm-12">
+            <button type="button" class="btn btn-info btn-lg btn-block" id="verificar" onclick="enviarOrden()"
+                    {% if pedido.pagado %}disabled{% endif %}>
                 Solicitar
             </button>
         </div>
-        <div class="col-md-2 ">
-            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="cobrar()">Cobrar</button>
+        <div class="col-md-2  col-sm-12">
+            <button type="button" class="btn btn-primary btn-lg btn-block" onclick="cobrar()"
+                    {% if pedido.pagado %}disabled{% endif %}>Cobrar
+            </button>
         </div>
-        <div class="col-md-2">
+
+        <div class="col-md-2  col-sm-12">
             <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Total</span>
                 </div>
                 <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
                        value="{% if pedido %}{{ pedido.total }}{% else %}0,00{% endif %}" readonly id="total">
+            </div>
+            <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Dinero</span>
                 </div>
                 <input type="number" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
-                       id="dinero" min="0">
+                       id="dinero" min="0" {% if pedido.pagado %}disabled{% endif %}>
+            </div>
+            <div class="input-group input-group-lg">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Vuelto</span>
                 </div>
@@ -165,18 +144,22 @@
                        readonly id="vuelto">
             </div>
         </div>
+
     </div>
+
     <script type="application/javascript">
         var csrftoken = Cookies.get('csrftoken');
         $(document).ready(function () {
             var today = new Date().toString('d - MMMM - yyyy');
             $("#fecha").val(today);
             $("#id_mesa").addClass("custom-select");
+            obtenerProductos();
 
         });
 
         function deleteItem(x) {
             {#console.log("Deleting item");#}
+            console.log(x);
             var $row = $(x).closest("tr");      // Finds the closest row <tr>
             $row.remove();
         }
@@ -194,27 +177,28 @@
 
         function deleteRow() {
 
-            deleteItem(this);
+            {#$("#verificar")#}
+
+            deleteItem($("#btn-eliminar")[0]);
             verificarTotal();
+
+            {#deleteItem(this);#}
+            {#verificarTotal();#}
 
         }
 
-        function addItem(x) {
+        function addItem(event) {
             if ($("#initialmessage").length) {
                 $("#initialmessage").remove()
             }
+            var id = event.data.id;
+            var nombre = event.data.nombre;
+            var precio = event.data.precio;
 
-            var $row = $(x).closest("tr"),       // Finds the closest row <tr>
-                $tds = $row.find("td"); // Finds all children <td> elements
-            var new_row = [];
-            $.each($tds, function () {               // Visits every single <td> element
-                new_row.push($(this).text());// Prints out the text within the <td>
-            });
-            {#console.log(new_row);#}
             $("#items_table").find('tbody')
                 .append($('<tr>')
                     .append($('<td>')
-                        .append(new_row[0])
+                        .append(id)
                         .addClass("id-item")
                         .attr('style', 'display:none;')
                     )
@@ -239,23 +223,30 @@
                         )
                     )
                     .append($('<td>')
-                        .append(new_row[1])
+                        .append(nombre)
                     )
                     .append($('<td>')
                         .attr('contenteditable', 'true')
                         .addClass("esp-item")
                     )
                     .append($('<td>')
-                        .append(new_row[3])
+                        .append(precio)
                         .addClass("precio-item")
                     )
                     .append($('<td>')
-                        .append(new_row[3])
+                        .append(precio)
                         .addClass("sub-item")
+                    )
+                    .append($('<td>')
+                        .attr("style", "width: 10px")
+                        .append($('<input>')
+                            .attr("type", "checkbox")
+                            .addClass("llevar"))
                     )
                     .append($('<td>')
                         .append($('<button>')
                             .attr("type", "button")
+                            .attr("id", "btn-eliminar")
                             .attr("class", "btn btn-danger")
                             .click(function () {
                                     deleteItem(this);
@@ -281,11 +272,13 @@
                     var cantidad = $('.cantidad-item', b).closest("input").val();
                     var esp = $('.esp-item', b).text();
                     var precio = $('.precio-item', b).text();
+                    var llevar = $('.llevar', b)[0].checked;
                     items.push({
                         "id": id,
                         "cantidad": cantidad,
                         "esp": esp,
                         "precio": precio,
+                        "llevar": llevar,
                     });
                 }
 
@@ -317,7 +310,6 @@
 
 
         function enviarOrden() {
-            verificarTotal();
             var data = {};
             data["items"] = prepareItems();
             data["mesa"] = $("#id_mesa").val();
@@ -356,6 +348,89 @@
 
         }
 
+        function obtenerProductos() {
+            $.ajax({
+                method: "GET",
+                url: " {% url 'productos_todos_api' %}",
+                dataType: 'json',
+                contentType: 'application/json',
+                beforeSend: function (xhr, settings) {
+                    if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                        xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                    }
+                },
+                success: function (data) {
+                    var i = 0;
+                    for (var index_categoria in data["categorias"]) {
+                        var cat_name_id = "collapse" + i.toString();
+                        var cat_name = data["categorias"][index_categoria]["nombre"];
+
+                        $("#accordion")
+                            .append($('<div>')
+                                .addClass('card')
+                                .append($('<div>')
+                                    .addClass('card-header')
+                                    .attr('id', 'heading' + cat_name_id)
+                                    .append($('<h2>')
+                                        .addClass('mb-0')
+                                        .append($('<button>')
+                                            .attr('data-toggle', 'collapse')
+                                            .attr('aria-expanded', 'true')
+                                            .attr('aria-controls', cat_name_id)
+                                            .attr('data-target', '#' + cat_name_id)
+                                            .attr('style', 'font-size : 20px; ')
+                                            .addClass('btn btn-link collapsed')
+                                            .append(cat_name)
+                                        )))
+                            )
+                            .append($('<div>')
+                                .addClass('collapse')
+                                .attr('id', cat_name_id)
+                                .attr('aria-labelledby', 'heading' + cat_name_id)
+                                .attr('data-parent', '#accordion')
+                                .append($('<div>')
+                                    .addClass('card-body')
+                                ));
+                        for (var index_prod in data["categorias"][index_categoria]["productos"]) {
+                            var producto = data["categorias"][index_categoria]["productos"][index_prod];
+                            {#console.log(producto);#}
+                            if (producto["disponible"]) {
+                                $('#' + cat_name_id).closest("div").find(".card-body")
+                                    .append($('<button>')
+                                            .addClass('btn btn-primary btn-lg btn-block')
+                                            .append(producto["nombre"] + " (" + producto["precio"] + ")")
+                                            .click({
+                                                    id: producto["id_producto"],
+                                                    nombre: producto["nombre"],
+                                                    precio: producto["precio"]
+                                                }, addItem
+                                            )
+                                        {#TODO show display for descripcion#}
+                                        {#.mouseenter(function () {#}
+                                        {#    console.log(producto["descripcion"])#}
+                                        //)
+                                    )
+                            } else {
+                                $('#' + cat_name_id).closest("div").find(".card-body")
+                                    .append($('<button disabled>')
+                                        .addClass('btn btn-secondary  btn-lg btn-block')
+                                        .append(producto["nombre"] + " (" + producto["precio"] + ")")
+                                    );
+                            }
+                        }
+                        i++;
+                    }
+
+
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+
+            })
+            ;
+        }
+
         function cobrar() {
             var total = $("#total").val();
             total = parseFloat(total.replace(",", "."));
@@ -371,7 +446,6 @@
                 vuelto = vuelto.toFixed(2);
                 $("#vuelto").val(vuelto);
             }
-
         }
     </script>
 {% endblock %}

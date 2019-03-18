@@ -13,6 +13,7 @@
             <table class="table table-sm" id="items_table">
                 <thead>
                 <tr>
+                    <th scope="col">Id</th>
                     <th scope="col">Cliente</th>
                     <th scope="col">Mesa</th>
                     <th scope="col">Pagado</th>
@@ -20,22 +21,48 @@
                     <th scope="col">Total</th>
                     <th scope="col">Ver</th>
                     <th scope="col">Finalizar</th>
+
                 </tr>
                 </thead>
                 <tbody>
                 {% if pedidos %}
                     {% for pedido in pedidos %}
                         <tr>
+                            <td>#{{ pedido.id_pedido }}</td>
                             <td>{{ pedido.cliente.nombres }} {{ pedido.cliente.apellidos }}</td>
                             <td>{{ pedido.get_mesa_display }}</td>
-                            <td>{{ pedido.pagado }}</td>
-                            <td>{{ pedido.terminado }}</td>
+                            {% if pedido.pagado %}
+                                <td>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         viewBox="0 0 24 24">
+                                        <path fill="none" d="M0 0h24v24H0z"/>
+                                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                                    </svg>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
+                            {% if pedido.terminado %}
+                                <td>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                         viewBox="0 0 24 24">
+                                        <path fill="none" d="M0 0h24v24H0z"/>
+                                        <path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/>
+                                    </svg>
+                                </td>
+                            {% else %}
+                                <td></td>
+                            {% endif %}
                             <td>{{ pedido.total }}</td>
                             <td>
                                 <a class="btn btn-primary"
                                    href="{% url 'pedido_detalle' pedido.id_pedido %}" role="button">VER</a></td>
-                            <td><a class="btn btn-primary"
-                                   href="{% url 'pedido_update_estado_pagado' pedido.id_pedido %}" role="button">Finalizar</a>
+                            <td>
+                                {% if not pedido.pagado %}
+                                    <a class="btn btn-primary"
+                                       href="{% url 'pedido_update_estado_pagado' pedido.id_pedido %}" role="button">Finalizar</a>
+                                {% endif %}
+
                             </td>
                         </tr>
                     {% endfor %}
