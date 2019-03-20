@@ -21,6 +21,7 @@
                     <th scope="col">Total</th>
                     <th scope="col">Ver</th>
                     <th scope="col">Finalizar</th>
+                    <th scope="col">Eliminar</th>
 
                 </tr>
                 </thead>
@@ -64,6 +65,10 @@
                                 {% endif %}
 
                             </td>
+                            <td>
+                                <a class="btn btn-danger"
+                                   href="{% url 'pedido_delete' pedido.id_pedido %}" role="button">Borrar</a></td>
+                            <td>
                         </tr>
                     {% endfor %}
                 {% endif %}

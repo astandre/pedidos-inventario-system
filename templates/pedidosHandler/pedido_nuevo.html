@@ -3,7 +3,6 @@
 {% block head %}
     <script src="{% static 'js/date/date.js' %}"></script>
     <script src="{% static 'js/date/date-es-EC.js' %}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
 {% endblock %}
 {% block title %}Nuevo Pedido{% endblock %}
 
@@ -14,12 +13,21 @@
     <div class="row">
         <div class="col-md-4">
             {#    TODO make this form look better#}
-            {#            TODO deactivate this when pedido is pagado#}
 
-            {{ form.as_table }}
+            <div class="input-group mb-4">
+                <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Mesa</label>
+                </div>
+                <select class="custom-select" id="mesa-select" {% if pedido.pagado %}disabled{% endif %}>>
+                    {% for  key, value in mesas %}
+                        <option {% if pedido.mesa == key %}selected{% endif %} value="{{ key }}">{{ value }}</option>
+
+                    {% endfor %}
+                </select>
+            </div>
         </div>
         <div class="col-md-2">
-            <div class="input-group input-group-lg">
+            <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Orden #</span>
                 </div>
@@ -28,7 +36,7 @@
             </div>
         </div>
         <div class="col-md-6">
-            <div class="input-group input-group-lg">
+            <div class="input-group">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-lg">Fecha: </span>
                 </div>
@@ -69,11 +77,12 @@
                             <tr>
                                 <td style="display:none;" class="id-item">{{ item.producto.id_producto }}</td>
                                 <td class="cantidad-item">
-                                    <input class="cantidad-item" type="number" min="0" pattern="[0-9]"
-                                           value="{{ item.cantidad }}" readonly style="width: 40px">
+                                    <input class="cantidad-item" type="number" min="1" pattern="[0-9]"
+                                           value="{{ item.cantidad }}" style="width: 40px">
+
                                 </td>
                                 <td>{{ item.producto.nombre }}</td>
-                                <td class="esp-item">{{ item.especificacion }}</td>
+                                <td class="esp-item" contenteditable="true">{{ item.especificacion }}</td>
                                 <td class="precio-item">{{ item.precio }}</td>
                                 <td class="sub-item">{{ item.precio }}</td>
                                 <td style="width: 10px">
@@ -148,7 +157,6 @@
     </div>
 
     <script type="application/javascript">
-        var csrftoken = Cookies.get('csrftoken');
         $(document).ready(function () {
             var today = new Date().toString('d - MMMM - yyyy');
             $("#fecha").val(today);
@@ -176,15 +184,8 @@
         }
 
         function deleteRow() {
-
-            {#$("#verificar")#}
-
             deleteItem($("#btn-eliminar")[0]);
             verificarTotal();
-
-            {#deleteItem(this);#}
-            {#verificarTotal();#}
-
         }
 
         function addItem(event) {
@@ -208,7 +209,7 @@
                             .addClass("cantidad-item")
                             .attr('type', 'number')
                             .attr('style', 'width: 40px')
-                            .attr('min', '0')
+                            .attr('min', '1')
                             .attr('pattern', '[0-9]')
                             .val(1)
                             .change(function () {
@@ -273,13 +274,15 @@
                     var esp = $('.esp-item', b).text();
                     var precio = $('.precio-item', b).text();
                     var llevar = $('.llevar', b)[0].checked;
-                    items.push({
-                        "id": id,
-                        "cantidad": cantidad,
-                        "esp": esp,
-                        "precio": precio,
-                        "llevar": llevar,
-                    });
+                    if (cantidad > 0) {
+                        items.push({
+                            "id": id,
+                            "cantidad": cantidad,
+                            "esp": esp,
+                            "precio": precio,
+                            "llevar": llevar,
+                        });
+                    }
                 }
 
             });
@@ -303,16 +306,14 @@
             $('#total').val(total.replace(".", ","));
         }
 
-        function csrfSafeMethod(method) {
-            // these HTTP methods do not require CSRF protection
-            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        }
+
 
 
         function enviarOrden() {
+            $("#verificar").attr("disabled", "disabled");
             var data = {};
             data["items"] = prepareItems();
-            data["mesa"] = $("#id_mesa").val();
+            data["mesa"] = $("#mesa-select").val();
             data["total"] = $("#total").val();
             data["total"] = parseFloat(data["total"].replace(",", "."));
             var id = $("#id-orden").val();
@@ -334,6 +335,7 @@
                     },
                     success: function (data) {
                         alert("Pedido añadido");
+                        $("#verificar").removeAttr("disabled");
                         console.log(data);
                         $("#id-orden").val(data["id-orden"]);
                     }, error: function (error) {
