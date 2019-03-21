@@ -14,7 +14,7 @@ class PedidoSerializer(serializers.Serializer):
         pass
 
     def create(self, validated_data):
-        print(validated_data)
+        # print(validated_data)
         try:
             cliente = Cliente.objects.get(cedula=9999999999)
         except Cliente.DoesNotExist:
@@ -48,6 +48,6 @@ class PedidoSerializer(serializers.Serializer):
 
                         new_item = Item(producto=producto, cantidad=item["cantidad"], precio=item["precio"],
                                         especificacion=item["esp"], pedido=pedido, llevar=item["llevar"])
-                        print(new_item)
+                        # print(new_item)
                         new_item.save()
             return pedido

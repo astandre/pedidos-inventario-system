@@ -129,6 +129,9 @@ def pedido_delete(request, id_pedido):
     return redirect('pedidos')
 
 
+pedidos_status = {"status": False}
+
+
 @api_view(['POST'])
 def pedido_nuevo_api(request):
     if request.method == 'POST':
@@ -137,12 +140,14 @@ def pedido_nuevo_api(request):
             resp = {}
             if "id" not in serializer.validated_data:
                 pedido = serializer.save()
-                print(pedido)
+                # print(pedido)
                 resp["id-orden"] = pedido.id_pedido
+                pedidos_status["status"] = True
             else:
                 pedido = serializer.save()
-                print(pedido)
+                # print(pedido)
                 resp["id-orden"] = pedido.id_pedido
+                pedidos_status["status"] = True
 
             return JsonResponse(resp, status=status.HTTP_200_OK)
         else:
@@ -153,45 +158,48 @@ def pedido_nuevo_api(request):
 @login_required
 def reporte_hoy(request):
     template = loader.get_template('pedidosHandler/reporte_hoy.html')
-
+    context = {}
     # Total de dinero en ventas
     total_ventas = Pedido.objects.filter(fecha__date=datetime.datetime.today(), pagado=True,
                                          terminado=True).aggregate(Sum('total'))["total__sum"]
 
+    # print(total_ventas)
     if total_ventas is not None:
         total_ventas = '%.2f' % total_ventas
+        context['total_ventas'] = total_ventas
     # Todos los items vendidos en el dia
     items = Item.objects.values("producto__nombre", "precio") \
         .filter(pedido__fecha__date=datetime.datetime.today(), pedido__pagado=True, pedido__terminado=True) \
         .annotate(cantidad_prod=Sum('cantidad')).order_by("-cantidad_prod")
     list(items)
-    for item in items:
-        item["total_aux"] = item["precio"] * item["cantidad_prod"]
+    if len(items) >= 0:
+        for item in items:
+            item["total_aux"] = item["precio"] * item["cantidad_prod"]
 
-    # Item mas y menos vendidos
-    item_mas_vendido = items[0]
-    item_menos_vendido = items[len(items) - 1]
+        # Item mas y menos vendidos
+        item_mas_vendido = items[0]
+        item_menos_vendido = items[len(items) - 1]
+        context['item_mas_vendido'] = item_mas_vendido
+        context['item_menos_vendido'] = item_menos_vendido
 
     # Promedio de completar pedido
     tiempos_serv = Pedido.objects.only("tiempo_total").filter(fecha__date=datetime.datetime.today(),
                                                               terminado=True)
-    total_secs = 0
-    for tm in tiempos_serv:
-        tm = tm.tiempo_total.strftime('%H:%M:%S')
-        time_parts = [int(s) for s in tm.split(':')]
-        total_secs += (time_parts[0] * 60 + time_parts[1]) * 60 + time_parts[2]
-    total_secs = total_secs / len(tiempos_serv)
-    total_secs, sec = divmod(total_secs, 60)
-    hr, min_time = divmod(total_secs, 60)
-    prom_serv = ("%d:%02d:%02d" % (hr, min_time, sec))
+    # print(tiempos_serv)
+    if len(tiempos_serv) > 0:
+        total_secs = 0
+        for tm in tiempos_serv:
+            tm = tm.tiempo_total.strftime('%H:%M:%S')
+            time_parts = [int(s) for s in tm.split(':')]
+            total_secs += (time_parts[0] * 60 + time_parts[1]) * 60 + time_parts[2]
+        total_secs = total_secs / len(tiempos_serv)
+        total_secs, sec = divmod(total_secs, 60)
+        hr, min_time = divmod(total_secs, 60)
+        prom_serv = ("%d:%02d:%02d" % (hr, min_time, sec))
+        context["prom_serv"] = prom_serv
     # print(prom_serv)
-    context = {
-        'total_ventas': total_ventas,
-        'item_mas_vendido': item_mas_vendido,
-        'item_menos_vendido': item_menos_vendido,
-        'items': items,
-        'prom_serv': prom_serv
-    }
+    context["items"] = items
+
     return HttpResponse(template.render(context, request))
 
 
@@ -207,5 +215,16 @@ def pedidos_frecuencia_api(request):
             pedidos_frec.append({"x": date_aux + str(x) + ":00:00", "y": frec_cont})
         # print(pedidos_frec)
         return JsonResponse({"pedidos": pedidos_frec}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({"Error": "Only get Allowed"}, status=status.HTTP_403_FORBIDDEN)
+
+
+@api_view(['GET', 'POST'])
+def get_changes_pedidos(request):
+    if request.method == 'GET':
+        return JsonResponse(pedidos_status, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        pedidos_status["status"] = False
+        return JsonResponse(pedidos_status, status=status.HTTP_200_OK)
     else:
         return JsonResponse({"Error": "Only get Allowed"}, status=status.HTTP_403_FORBIDDEN)

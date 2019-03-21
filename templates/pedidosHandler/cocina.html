@@ -16,7 +16,7 @@
                 {% for pedido in pedidos %}
                     <div class="col-sm-6">
                         <div class="card">
-                            <div class="card-body table-responsive" >
+                            <div class="card-body table-responsive">
                                 <h5 class="card-title">#{{ pedido.id_pedido }}</h5>
                                 <h5 class="card-title"> Mesa: {{ pedido.get_mesa_display }}</h5>
                                 {% if pedido.items.all %}
@@ -73,5 +73,37 @@
             </div>
         </div>
     </div>
+    <script type="application/javascript">
+        var url = "{% url 'get_changes_pedidos' %}";
+
+        (function worker() {
+            $.ajax({
+                url: url,
+                success: function (data) {
+                    if (data["status"]) {
+                        $.ajax({
+                            url: url,
+                            method: "POST", beforeSend: function (xhr, settings) {
+                                if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                                    xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                                }
+                            },
+                            success: function (data) {
+                                console.log(data);
+                                if (!data.error) location.reload(true);
+                            }
+                        });
+
+                    }
+                }, complete: function () {
+                    setTimeout(worker, 5000);
+
+
+                }
+            });
+        })();
+
+
+    </script>
 
 {% endblock %}

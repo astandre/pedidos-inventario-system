@@ -97,8 +97,8 @@
                                     {% endif %}
                                 </td>
                                 <td>
-                                    <button type="button" id="btn-eliminar" class="btn btn-danger" onclick="deleteRow()"
-                                            {% if pedido.pagado %}disabled{% endif %}>Eliminar
+                                    <button type="button" id="btn-eliminar" class="btn btn-danger btn-eliminar-fnc"
+                                    {% if pedido.pagado %}disabled{% endif %}>Eliminar
                                     </button>
                                 </td>
 
@@ -162,31 +162,18 @@
             $("#fecha").val(today);
             $("#id_mesa").addClass("custom-select");
             obtenerProductos();
+            $(".btn-eliminar-fnc").click(function () {
+                deleteItem(this);
+                verificarTotal();
+            });
 
         });
 
         function deleteItem(x) {
-            {#console.log("Deleting item");#}
-            console.log(x);
             var $row = $(x).closest("tr");      // Finds the closest row <tr>
             $row.remove();
         }
 
-        function update_values() {
-            var cantidad = $(this).val();
-            var precio = $(this).closest('tr').find(".precio-item").text();
-            precio = parseFloat(precio.replace(",", "."));
-            var subtotal = cantidad * precio;
-            subtotal = subtotal.toFixed(2);
-            $(this).closest('tr').find(".sub-item").text(subtotal.replace(".", ","));
-            verificarTotal();
-
-        }
-
-        function deleteRow() {
-            deleteItem($("#btn-eliminar")[0]);
-            verificarTotal();
-        }
 
         function addItem(event) {
             if ($("#initialmessage").length) {
@@ -200,8 +187,8 @@
                 .append($('<tr>')
                     .append($('<td>')
                         .append(id)
-                        .addClass("id-item")
                         .attr('style', 'display:none;')
+                        .addClass("id-item")
                     )
                     .append($('<td>')
                         .addClass("cantidad-item")
@@ -246,6 +233,7 @@
                     )
                     .append($('<td>')
                         .append($('<button>')
+                            .text('Eliminar')
                             .attr("type", "button")
                             .attr("id", "btn-eliminar")
                             .attr("class", "btn btn-danger")
@@ -254,7 +242,6 @@
                                     verificarTotal();
                                 }
                             )
-                            .append("Eliminar")
                         )
                     )
                 )
@@ -305,8 +292,6 @@
             total = total.toFixed(2);
             $('#total').val(total.replace(".", ","));
         }
-
-
 
 
         function enviarOrden() {

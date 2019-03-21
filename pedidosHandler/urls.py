@@ -5,6 +5,7 @@ urlpatterns = [
     path(r'pedido/nuevo', views.pedido_nuevo, name='pedido_nuevo'),
     path(r'pedido', views.pedidos, name='pedidos'),
     path(r'pedido/todos', views.pedidos_todos, name='pedidos_todos'),
+    path(r'pedido/status', views.get_changes_pedidos, name='get_changes_pedidos'),
     path(r'cocina', views.cocina, name='cocina'),
     path(r'api/pedido/nuevo', views.pedido_nuevo_api, name='pedido_nuevo_api'),
     path(r'api/productos/', views.productos_todos_api, name='productos_todos_api'),

@@ -9,36 +9,42 @@
     <div class="row">
         <div class="col-md-6">
             <h2>Resumen</h2>
-            <div class="input-group input-group-lg">
+            {% if total_ventas and item_mas_vendido and item_menos_vendido %}
+                <div class="input-group input-group-lg">
 
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">Total Ventas</span>
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-lg">Total Ventas</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                           value="{{ total_ventas }}"
+                           readonly>
                 </div>
-                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
-                       value="{% if total_ventas %}{{ total_ventas }}{% else %} No existen registros todavia{% endif %}"
-                       readonly>
-            </div>
-            <div class="input-group input-group-lg">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">Item mas vendido</span>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-lg">Item mas vendido</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                           value="{{ item_mas_vendido.producto__nombre }} ({{ item_mas_vendido.cantidad_prod }})"
+                           readonly>
                 </div>
-                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
-                       value="{{ item_mas_vendido.producto__nombre }} ({{ item_mas_vendido.cantidad_prod }})" readonly>
-            </div>
-            <div class="input-group input-group-lg">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">Item menos vendido</span>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-lg">Item menos vendido</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                           value="{{ item_menos_vendido.producto__nombre }} ({{ item_menos_vendido.cantidad_prod }})"
+                           readonly>
                 </div>
-                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
-                       value="{{ item_menos_vendido.producto__nombre }} ({{ item_menos_vendido.cantidad_prod }})" readonly>
-            </div>
-            <div class="input-group input-group-lg">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-lg">Promedio de servicio</span>
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroup-sizing-lg">Promedio de servicio</span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
+                           value="{{ prom_serv }}" readonly>
                 </div>
-                <input type="text" class="form-control" aria-label="2.51" aria-describedby="inputGroup-sizing-sm"
-                       value="{{ prom_serv }}" readonly>
-            </div>
+            {% else %}
+                <h3>No existen registros todavia</h3>
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -49,7 +55,6 @@
                 <table class="table table-sm" id="items_table">
                     <thead>
                     <tr>
-                        <th scope="col" style=" display:none;">Codigo</th>
                         <th scope="col">Producto</th>
                         <th scope="col">Cantidad</th>
                         <th scope="col">Precio</th>
@@ -61,7 +66,6 @@
                     {% if items %}
                         {% for item in items %}
                             <tr>
-                                <td style="display:none;" class="id-item">1</td>
                                 <td class="cantidad-item">{{ item.producto__nombre }}</td>
                                 <td class="cantidad-item">{{ item.cantidad_prod }}</td>
                                 <td class="cantidad-item">{{ item.precio }}</td>
@@ -70,7 +74,7 @@
                         {% endfor %}
                     {% else %}
                         <tr id="initialmessage">
-                            <td align="center" colspan="6">Agrega nuevos productos ahora!</td>
+                            <td align="center" colspan="6">No existen pedidos para generar el reporte!</td>
                         </tr>
                     {% endif %}
 
@@ -103,7 +107,7 @@
                     }
                 },
                 success: function (data) {
-                    console.log(data);
+                    {#console.log(data);#}
                     drawLinearChart(data);
                 }, error: function (error) {
                     console.log(error);
@@ -118,7 +122,7 @@
             for (var index in  data["pedidos"]) {
                 data["pedidos"][index]["x"] = new Date(data["pedidos"][index]["x"])
             }
-            console.log(data["pedidos"]);
+            {#console.log(data["pedidos"]);#}
             var ctx = document.getElementById('myChart').getContext('2d');
             var myLineChart = new Chart(ctx, {
                 type: 'line',
@@ -140,7 +144,8 @@
                         yAxes: [{
                             ticks: {
                                 beginAtZero: true,
-                                max: 10
+                                maxTicksLimit: 10,
+                                precision: 0
                             }
                         }],
                         xAxes: [{
@@ -150,9 +155,14 @@
                                 unit: 'minute'
                             },
                             ticks: {
-                                max: 10
+                                maxTicksLimit: 10
                             }
                         }]
+                    },
+                    elements: {
+                        line: {
+                            tension: 0
+                        }
                     }
                 }
             });
