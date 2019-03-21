@@ -22,6 +22,7 @@ B6 = 'B6'
 B7 = 'B7'
 B8 = 'B8'
 B9 = 'B9'
+LL = 'LL'
 MESA_CHOICES = (
     (A1, 'Afuera puerta izquierda'),
     (A2, 'Afuera puerta derecha'),
@@ -37,5 +38,6 @@ MESA_CHOICES = (
     (B7, 'Adentro #7'),
     (B8, 'Adentro #8'),
     (B9, 'Adentro extra 1'),
+    (LL, 'Llevar'),
 
 )
