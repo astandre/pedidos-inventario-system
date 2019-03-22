@@ -139,6 +139,7 @@ def pedido_nuevo_api(request):
         if serializer.is_valid():
             resp = {}
             if "id" not in serializer.validated_data:
+                # TODO calculate the price here
                 pedido = serializer.save()
                 # print(pedido)
                 resp["id-orden"] = pedido.id_pedido
