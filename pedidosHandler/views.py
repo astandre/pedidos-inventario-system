@@ -138,16 +138,11 @@ def pedido_nuevo_api(request):
         serializer = PedidoSerializer(data=request.data)
         if serializer.is_valid():
             resp = {}
-            if "id" not in serializer.validated_data:
-                pedido = serializer.save()
-                # print(pedido)
-                resp["id-orden"] = pedido.id_pedido
-                pedidos_status["status"] = True
-            else:
-                pedido = serializer.save()
-                # print(pedido)
-                resp["id-orden"] = pedido.id_pedido
-                pedidos_status["status"] = True
+            pedido = serializer.save()
+            print(pedido)
+            resp["id-orden"] = pedido.id_pedido
+            resp["total"] = pedido.total
+            pedidos_status["status"] = True
 
             return JsonResponse(resp, status=status.HTTP_200_OK)
         else:
