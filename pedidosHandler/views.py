@@ -166,7 +166,7 @@ def reporte_hoy(request):
         .filter(pedido__fecha__date=datetime.datetime.today(), pedido__pagado=True, pedido__terminado=True) \
         .annotate(cantidad_prod=Sum('cantidad')).order_by("-cantidad_prod")
     list(items)
-    if len(items) >= 0:
+    if len(items) > 0:
         for item in items:
             item["total_aux"] = item["precio"] * item["cantidad_prod"]
 
