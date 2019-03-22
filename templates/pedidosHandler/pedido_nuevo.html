@@ -76,10 +76,9 @@
                         {% for item in pedido.items.all %}
                             <tr>
                                 <td style="display:none;" class="id-item">{{ item.producto.id_producto }}</td>
-                                <td class="cantidad-item">
+                                <td>
                                     <input class="cantidad-item" type="number" min="1" pattern="[0-9]"
                                            value="{{ item.cantidad }}" style="width: 40px">
-
                                 </td>
                                 <td>{{ item.producto.nombre }}</td>
                                 <td class="esp-item" contenteditable="true">{{ item.especificacion }}</td>
@@ -98,7 +97,7 @@
                                 </td>
                                 <td>
                                     <button type="button" id="btn-eliminar" class="btn btn-danger btn-eliminar-fnc"
-                                    {% if pedido.pagado %}disabled{% endif %}>Eliminar
+                                            {% if pedido.pagado %}disabled{% endif %}>Eliminar
                                     </button>
                                 </td>
 
@@ -109,8 +108,6 @@
                             <td align="center" colspan="6">Agrega nuevos productos ahora!</td>
                         </tr>
                     {% endif %}
-
-
                     </tbody>
                 </table>
             </div>
@@ -167,6 +164,15 @@
                 verificarTotal();
             });
 
+            $(".cantidad-item").change(function () {
+                var cantidad = $(this).val();
+                var precio = $(this).closest('tr').find(".precio-item").text();
+                precio = parseFloat(precio.replace(",", "."));
+                var subtotal = cantidad * precio;
+                subtotal = subtotal.toFixed(2);
+                $(this).closest('tr').find(".sub-item").text(subtotal.replace(".", ","));
+                verificarTotal();
+            })
         });
 
         function deleteItem(x) {
@@ -191,7 +197,6 @@
                         .addClass("id-item")
                     )
                     .append($('<td>')
-                        .addClass("cantidad-item")
                         .append($('<input>')
                             .addClass("cantidad-item")
                             .attr('type', 'number')
@@ -206,6 +211,7 @@
                                 var subtotal = cantidad * precio;
                                 subtotal = subtotal.toFixed(2);
                                 $(this).closest('tr').find(".sub-item").text(subtotal.replace(".", ","));
+                                verificarTotal();
                                 verificarTotal();
                             })
                         )

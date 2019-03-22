@@ -143,7 +143,6 @@ def pedido_nuevo_api(request):
             resp["id-orden"] = pedido.id_pedido
             resp["total"] = pedido.total
             pedidos_status["status"] = True
-
             return JsonResponse(resp, status=status.HTTP_200_OK)
         else:
             messages.warning(request, "Ha ocurrido un error")
