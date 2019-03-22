@@ -329,6 +329,7 @@
                         $("#verificar").removeAttr("disabled");
                         console.log(data);
                         $("#id-orden").val(data["id-orden"]);
+                        $("#total").val(data["total"].toFixed(2));
                     }, error: function (error) {
                         console.log(error);
                     }
