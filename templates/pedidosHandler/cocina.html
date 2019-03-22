@@ -76,6 +76,11 @@
     <script type="application/javascript">
         var url = "{% url 'get_changes_pedidos' %}";
 
+        var audio = new Audio('{% static 'sounds/ding.mp3' %}');
+        audio.onended = function () {
+            location.reload(true);
+        };
+
         (function worker() {
             $.ajax({
                 url: url,
@@ -90,15 +95,16 @@
                             },
                             success: function (data) {
                                 console.log(data);
-                                if (!data.error) location.reload(true);
-                            }
-                        });
+                                {#var audio = new Audio('{% static 'sounds/ding.mp3' %}');#}
+                                {#audio.onended = function () {#}
+                                {#location.reload(true);#}
 
+                                audio.play();
+                            }
+                        })
                     }
                 }, complete: function () {
                     setTimeout(worker, 5000);
-
-
                 }
             });
         })();
