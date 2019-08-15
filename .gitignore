@@ -1,7 +1,3 @@
-pedidosHandler/migrations/*.*
-inventarioHandler/migrations/*.*
-
-
 ### OSX ###
 .DS_Store
 .AppleDouble
