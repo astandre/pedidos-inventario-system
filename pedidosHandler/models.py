@@ -1,7 +1,6 @@
 from django.db import models
 from inventarioHandler.models import Producto
-from .utils import constants
-from datetime import datetime
+from datetime import datetime, timedelta, time
 
 
 # Create your models here.
@@ -20,6 +19,20 @@ class Direccion(models.Model):
 
     def __str__(self):
         return self.provincia + " (" + self.ciudad + "), " + self.calles
+
+
+class Mesa(models.Model):
+    id_mesa = models.AutoField(primary_key=True)
+    codigo = models.CharField(max_length=4, null=False)
+    mesa = models.CharField(max_length=40, null=False)
+
+    class Meta:
+        default_related_name = 'mesas'
+        verbose_name = "Mesa"
+        verbose_name_plural = "Mesas"
+
+    def __str__(self):
+        return self.mesa
 
 
 class Cliente(models.Model):
@@ -41,17 +54,52 @@ class Cliente(models.Model):
         return self.cedula
 
 
+class PedidoManager(models.Manager):
+    def pedidos_today(self):
+        today = datetime.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+        return self.filter(fecha__lte=today_end, fecha__gte=today_start)
+
+    def pedidos_today_json(self):
+        today = datetime.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+        return list(self.filter(fecha__lte=today_end, fecha__gte=today_start).values())
+
+    def pedidos_by_estado_json(self, status):
+        today = datetime.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+        status = status.upper()
+        return list(self.filter(estado=status, fecha__lte=today_end, fecha__gte=today_start).values())
+
+
 class Pedido(models.Model):
-    # TODO add begin time and end time
-    # TODO make id_pedido unique for day
     id_pedido = models.AutoField(primary_key=True)
+    codigo = models.IntegerField(blank=False, null=False, default=1)
     cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
-    mesa = models.CharField(max_length=2, choices=constants.MESA_CHOICES, blank=False, default=constants.A1)
+    mesa = models.ForeignKey(Mesa, null=True, blank=True, on_delete=models.CASCADE)
+    llevar = models.BooleanField(default=False)
     fecha = models.DateTimeField(default=datetime.now)
-    pagado = models.BooleanField(default=False)
-    terminado = models.BooleanField(default=False)
+    PREPARANDO = "P"
+    PREPARADO = "L"
+    SERVIDO = "C"
+    PAGADO = "G"
+    ESTADO_CHOICES = (
+        (PREPARANDO, 'PREPARANDO'),
+        (PREPARADO, 'PREPARADO'),
+        (SERVIDO, 'COMPLETO'),
+        (PAGADO, 'PAGADO'),
+    )
+    estado = models.CharField(max_length=2, choices=ESTADO_CHOICES, blank=False, default=PREPARANDO)
     tiempo_total = models.TimeField(blank=True, null=True)
-    total = models.DecimalField(null=False, max_digits=5, decimal_places=2)
+    total = models.DecimalField(default=0, max_digits=5, decimal_places=2)
+
+    objects = PedidoManager()
 
     class Meta:
         default_related_name = 'pedidos'
@@ -59,7 +107,7 @@ class Pedido(models.Model):
         verbose_name_plural = "Pedidos"
 
     def __str__(self):
-        return self.cliente.nombres
+        return str(self.codigo)
 
 
 class Item(models.Model):

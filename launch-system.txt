@@ -1,5 +1,0 @@
-ECHO OFF
-title Inicializando sistema de pedidos
-ECHO Inicializando sistema de pedidos
-cmd /k "cd /d C:\Users\andre\Desktop\chatbot-tutorial\venv\Scripts & activate & cd /d    C:\Users\andre\Desktop\chatbot-tutorial & python manage.py runserver 0.0.0.0:8000"
-PAUSE >nul

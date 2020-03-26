@@ -4,30 +4,24 @@ from django.template import loader
 from rest_framework import status
 from django.shortcuts import redirect
 from inventarioHandler.models import Categoria, Producto
-from pedidosHandler.models import Pedido, Item
+from pedidosHandler.models import Pedido, Item, Mesa
 from django.db.models import Sum, Count
 from rest_framework.decorators import api_view
 from django.contrib import messages
 from .serializers import PedidoSerializer
 import datetime
-from .utils import constants
 
 
-# Create your views here.
-
-def pedido_nuevo(request):
-    template = loader.get_template('pedidosHandler/pedido_nuevo.html')
-    context = {
-        'mesas': constants.MESA_CHOICES
-    }
-    return HttpResponse(template.render(context, request))
+@api_view(['GET'])
+def mesas_list_api(request):
+    mesas = list(Mesa.objects.values().all())
+    return JsonResponse({"mesas": mesas}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def productos_todos_api(request):
     if request.method == 'GET':
         categorias = list(Categoria.objects.values().all().order_by("nombre"))
-
         for categoria in categorias:
             categoria["productos"] = list(Producto.objects.values().filter(categoria=categoria["id_categoria"]))
 
@@ -38,7 +32,8 @@ def productos_todos_api(request):
 
 @login_required
 def pedidos(request):
-    pedidos_list = Pedido.objects.filter(pagado=False, fecha__date=datetime.datetime.today()).order_by("pagado")
+    pedidos_list = Pedido.objects.filter(estado__in=[Pedido.PREPARANDO, Pedido.PREPARADO, Pedido.SERVIDO],
+                                         fecha__date=datetime.datetime.today()).order_by("pagado")
     template = loader.get_template('pedidosHandler/pedidos.html')
     context = {
         'pedidos': pedidos_list,
@@ -57,7 +52,7 @@ def pedidos_todos(request):
 
 
 def cocina(request):
-    pedidos_list = Pedido.objects.filter(terminado=False)
+    pedidos_list = Pedido.objects.filter(estado=Pedido.PREPARANDO)
     template = loader.get_template('pedidosHandler/cocina.html')
     context = {
         'pedidos': pedidos_list,
@@ -71,7 +66,7 @@ def pedido_detalle(request, id_pedido):
     pedido = Pedido.objects.get(id_pedido=id_pedido)
     template = loader.get_template('pedidosHandler/pedido_nuevo.html')
     context = {
-        'mesas': constants.MESA_CHOICES,
+        'mesas': list(Mesa.objects.values().all()),
         'categorias': categorias,
         'pedido': pedido,
     }
@@ -85,7 +80,7 @@ def pedido_update_estado_pagado(request, id_pedido):
     except Pedido.DoesNotExist:
         messages.warning(request, "Pedido no encontrado")
     else:
-        pedido.pagado = True
+        pedido.estado = Pedido.SERVIDO
         pedido.save()
         messages.success(request, "Pedido finalizado correctamente")
 
@@ -99,7 +94,7 @@ def pedido_update_estado_completo(request, id_pedido):
         messages.warning(request, "Pedido no encontrado")
     else:
         # actualizando estado de terminado y tiempo que tomo el pedido
-        pedido.terminado = True
+        pedido.estado = Pedido.PAGADO
 
         tiempo_inicio = pedido.fecha.timestamp()
         ahora = datetime.datetime.now().timestamp()
@@ -137,16 +132,58 @@ def pedido_nuevo_api(request):
     if request.method == 'POST':
         serializer = PedidoSerializer(data=request.data)
         if serializer.is_valid():
-            resp = {}
             pedido = serializer.save()
-            print(pedido)
-            resp["id-orden"] = pedido.id_pedido
-            resp["total"] = pedido.total
-            pedidos_status["status"] = True
-            return JsonResponse(resp, status=status.HTTP_200_OK)
+            print(pedido.total)
+            total = 0
+            return JsonResponse({"total": total}, status=status.HTTP_200_OK)
         else:
             messages.warning(request, "Ha ocurrido un error")
             return JsonResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def resumen_pedido_api(request):
+    if request.method == 'POST':
+        serializer = PedidoSerializer(data=request.data)
+        if serializer.is_valid():
+            pedido = serializer.data
+            # print(pedido)
+            productos = []
+            total = 0
+            for item in pedido["items"]:
+                try:
+                    producto = Producto.objects.get(id_producto=item["id_producto"])
+                except Producto.DoesNotExist:
+                    print("Producto no encontrado")
+                else:
+                    subtotal = producto.precio * item["cantidad"]
+                    total += subtotal
+                    aux_prod = {"nombre": producto.nombre,
+                                "precio": producto.precio,
+
+                                "cantidad": item["cantidad"],
+                                "subtotal": subtotal}
+                    if "esp" in item:
+                        aux_prod["esp"] = item["esp"]
+                    productos.append(aux_prod)
+            return JsonResponse({"total": total, "productos": productos}, status=status.HTTP_200_OK)
+        else:
+            messages.warning(request, "Ha ocurrido un error")
+            return JsonResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['GET'])
+def all_pedido_today_api(request):
+    if request.method == 'GET':
+        pedidos = Pedido.objects.pedidos_today_json()
+        return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def pedido_by_estado_api(request, estado):
+    if request.method == 'GET':
+        pedidos = Pedido.objects.pedidos_by_estado_json(estado)
+        return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
 
 
 @login_required

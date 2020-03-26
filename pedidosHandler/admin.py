@@ -18,8 +18,8 @@ class ItemsAdmin(admin.ModelAdmin):
 class PedidosAdmin(admin.ModelAdmin):
     inlines = [ItemsInline]
     search_fields = ['id_pedido']
-    list_display = ('id_pedido', 'cliente', 'total', 'fecha', 'pagado', 'terminado', 'tiempo_total')
-    list_filter = ['cliente__cedula', 'cliente__nombres', 'cliente__apellidos', 'pagado', 'terminado', 'fecha']
+    list_display = ('id_pedido', 'cliente', 'total', 'fecha', 'estado', 'tiempo_total', 'mesa')
+    list_filter = ['cliente__cedula', 'cliente__nombres', 'cliente__apellidos', 'estado', 'fecha', 'mesa__mesa']
 
 
 class ClientesAdmin(admin.ModelAdmin):
@@ -33,7 +33,14 @@ class DireccionesAdmin(admin.ModelAdmin):
     search_fields = ['provincia', 'ciudad', 'calles']
 
 
+class MesaAdmin(admin.ModelAdmin):
+    search_fields = ['codigo']
+    list_display = ('codigo', 'mesa')
+    list_filter = ['codigo', 'mesa']
+
+
 admin.site.register(Cliente, ClientesAdmin)
 admin.site.register(Direccion, DireccionesAdmin)
 admin.site.register(Pedido, PedidosAdmin)
+admin.site.register(Mesa, MesaAdmin)
 admin.site.register(Item, ItemsAdmin)
