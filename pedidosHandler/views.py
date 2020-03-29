@@ -159,12 +159,11 @@ def resumen_pedido_api(request):
                     subtotal = producto.precio * item["cantidad"]
                     total += subtotal
                     aux_prod = {"nombre": producto.nombre,
-                                "precio": producto.precio,
-
-                                "cantidad": item["cantidad"],
-                                "subtotal": subtotal}
+                                "precio": float(producto.precio),
+                                "cantidad": int(item["cantidad"]),
+                                "subtotal": float(subtotal)}
                     if "esp" in item:
-                        aux_prod["esp"] = item["esp"]
+                        aux_prod["esp"] = item["especificacion"]
                     productos.append(aux_prod)
             return JsonResponse({"total": total, "productos": productos}, status=status.HTTP_200_OK)
         else:

@@ -28,7 +28,7 @@ class PedidoSerializer(serializers.Serializer):
                         print("Producto no encontrado")
                     else:
                         total += producto.precio * item["cantidad"]
-                        new_item = Item(producto=producto, cantidad=item["cantidad"], precio=producto.precio,
+                        new_item = Item(producto=producto, cantidad=int(item["cantidad"]), precio=producto.precio,
                                         pedido=pedido)
                         if "llevar" in validated_data and validated_data["llevar"]:
                             new_item.llevar = True
@@ -38,7 +38,7 @@ class PedidoSerializer(serializers.Serializer):
                             new_item.especificacion = item["esp"]
                         new_item.save()
 
-                pedido.total = total
+                pedido.total = float(total)
                 # pedido.save()
                 # return pedido
         pass
@@ -73,7 +73,7 @@ class PedidoSerializer(serializers.Serializer):
                     print("Producto no encontrado")
                 else:
                     total += producto.precio * item["cantidad"]
-                    new_item = Item(producto=producto, cantidad=item["cantidad"], precio=producto.precio,
+                    new_item = Item(producto=producto, cantidad=int(item["cantidad"]), precio=producto.precio,
                                     pedido=pedido)
                     if "llevar" in validated_data and validated_data["llevar"]:
                         new_item.llevar = True
@@ -83,6 +83,6 @@ class PedidoSerializer(serializers.Serializer):
                         new_item.especificacion = item["esp"]
                     # new_item.save()
 
-                pedido.total = total
+                pedido.total = float(total)
                 pedido.save()
             return pedido
