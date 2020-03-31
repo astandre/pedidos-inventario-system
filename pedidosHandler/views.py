@@ -134,8 +134,8 @@ def pedido_nuevo_api(request):
         if serializer.is_valid():
             pedido = serializer.save()
             print(pedido.total)
-            total = 0
-            return JsonResponse({"total": total}, status=status.HTTP_200_OK)
+            return JsonResponse({"total": pedido.total, "id_pedido": pedido.id_pedido, "codigo": pedido.codigo},
+                                status=status.HTTP_200_OK)
         else:
             messages.warning(request, "Ha ocurrido un error")
             return JsonResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
@@ -162,8 +162,8 @@ def resumen_pedido_api(request):
                                 "precio": float(producto.precio),
                                 "cantidad": int(item["cantidad"]),
                                 "subtotal": float(subtotal)}
-                    if "esp" in item:
-                        aux_prod["esp"] = item["especificacion"]
+                    if "especificacion" in item:
+                        aux_prod["especificacion"] = item["especificacion"]
                     productos.append(aux_prod)
             return JsonResponse({"total": total, "productos": productos}, status=status.HTTP_200_OK)
         else:
@@ -182,6 +182,13 @@ def all_pedido_today_api(request):
 def pedido_by_estado_api(request, estado):
     if request.method == 'GET':
         pedidos = Pedido.objects.pedidos_by_estado_json(estado)
+        return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def pedido_preparando_api(request):
+    if request.method == 'GET':
+        pedidos = Pedido.objects.pedidos_by_estado_json("P") + Pedido.objects.pedidos_by_estado_json("L")
         return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
 
 

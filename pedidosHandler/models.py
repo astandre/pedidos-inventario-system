@@ -32,7 +32,7 @@ class Mesa(models.Model):
         verbose_name_plural = "Mesas"
 
     def __str__(self):
-        return self.mesa
+        return f"{self.mesa}"
 
 
 class Cliente(models.Model):
@@ -75,7 +75,8 @@ class PedidoManager(models.Manager):
         today_start = datetime.combine(today, time())
         today_end = datetime.combine(tomorrow, time())
         status = status.upper()
-        return list(self.filter(estado=status, fecha__lte=today_end, fecha__gte=today_start).values())
+        return list(self.filter(estado=status, fecha__lte=today_end, fecha__gte=today_start)
+                    .values("id_pedido", "codigo", "mesa__mesa", "estado", "llevar", "fecha", "total"))
 
 
 class Pedido(models.Model):
