@@ -64,7 +64,7 @@ class PedidoSerializer(serializers.Serializer):
             pedido = Pedido(mesa=mesa, estado=Pedido.PREPARANDO, cliente=cliente, codigo=codigo)
             if "llevar" in validated_data and validated_data["llevar"]:
                 pedido.llevar = True
-
+            pedido.save()
             total = 0
             for item in validated_data["items"]:
                 try:
@@ -81,7 +81,7 @@ class PedidoSerializer(serializers.Serializer):
                         new_item.llevar = False
                     if "esp" in validated_data:
                         new_item.especificacion = item["esp"]
-                    # new_item.save()
+                    new_item.save()
 
                 pedido.total = float(total)
                 pedido.save()

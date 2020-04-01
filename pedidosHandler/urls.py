@@ -14,6 +14,7 @@ urlpatterns = [
     path(r'api/pedido/today', views.all_pedido_today_api, name='all_pedido_today_api'),
     path(r'api/pedido/estado/<str:estado>', views.pedido_by_estado_api, name='pedido_by_estado_api'),
     path(r'api/pedido/preparando', views.pedido_preparando_api, name='pedido_preparando_api'),
+    path(r'api/pedido/<int:id_pedido>', views.pedido_detalle_api, name='pedido_detalle_api'),
     path(r'api/productos', views.productos_todos_api, name='productos_todos_api'),
     path(r'api/pedido/frec', views.pedidos_frecuencia_api, name='pedidos_frecuencia_api'),
     path(r'pedido/<int:id_pedido>', views.pedido_detalle, name='pedido_detalle'),

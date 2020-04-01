@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 from django.contrib import messages
 from .serializers import PedidoSerializer
 import datetime
+from django.core.serializers import serialize
 
 
 @api_view(['GET'])
@@ -176,6 +177,34 @@ def all_pedido_today_api(request):
     if request.method == 'GET':
         pedidos = Pedido.objects.pedidos_today_json()
         return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
+
+
+@api_view(['GET'])
+def pedido_detalle_api(request, id_pedido):
+    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    items = Item.objects.filter(pedido=pedido)
+    items_list = []
+    for item_aux in items:
+        item_obj = {
+            "producto": item_aux.producto.id_producto,
+            "cantidad": item_aux.cantidad,
+            "especificacion": item_aux.especificacion,
+            "llevar": item_aux.llevar,
+            "precio": item_aux.precio,
+        }
+        items_list.append(item_obj)
+
+    final_pedido = {
+        "id_pedido": pedido.id_pedido,
+        "mesa": pedido.mesa_id,
+        "codigo": pedido.codigo,
+        "llevar": pedido.llevar,
+        "fecha": pedido.fecha,
+        "estado": pedido.estado,
+        "total": pedido.total,
+        "items": items_list
+    }
+    return JsonResponse({'pedido': final_pedido}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
