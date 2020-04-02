@@ -142,34 +142,6 @@ def pedido_nuevo_api(request):
             return JsonResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
-@api_view(['POST'])
-def resumen_pedido_api(request):
-    if request.method == 'POST':
-        serializer = PedidoSerializer(data=request.data)
-        if serializer.is_valid():
-            pedido = serializer.data
-            # print(pedido)
-            productos = []
-            total = 0
-            for item in pedido["items"]:
-                try:
-                    producto = Producto.objects.get(id_producto=item["id_producto"])
-                except Producto.DoesNotExist:
-                    print("Producto no encontrado")
-                else:
-                    subtotal = producto.precio * item["cantidad"]
-                    total += subtotal
-                    aux_prod = {"nombre": producto.nombre,
-                                "precio": float(producto.precio),
-                                "cantidad": int(item["cantidad"]),
-                                "subtotal": float(subtotal)}
-                    if "especificacion" in item:
-                        aux_prod["especificacion"] = item["especificacion"]
-                    productos.append(aux_prod)
-            return JsonResponse({"total": total, "productos": productos}, status=status.HTTP_200_OK)
-        else:
-            messages.warning(request, "Ha ocurrido un error")
-            return JsonResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
 
 @api_view(['GET'])

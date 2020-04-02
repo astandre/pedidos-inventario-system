@@ -10,7 +10,6 @@ urlpatterns = [
     path(r'cocina', views.cocina, name='cocina'),
     path(r'api/mesas', views.mesas_list_api, name='mesas_list_api'),
     path(r'api/pedido/nuevo', views.pedido_nuevo_api, name='pedido_nuevo_api'),
-    path(r'api/pedido/resumen', views.resumen_pedido_api, name='resumen_pedido_api'),
     path(r'api/pedido/today', views.all_pedido_today_api, name='all_pedido_today_api'),
     path(r'api/pedido/estado/<str:estado>', views.pedido_by_estado_api, name='pedido_by_estado_api'),
     path(r'api/pedido/preparando', views.pedido_preparando_api, name='pedido_preparando_api'),
