@@ -87,8 +87,8 @@ class Pedido(models.Model):
     llevar = models.BooleanField(default=False)
     fecha = models.DateTimeField(default=datetime.now)
     PREPARANDO = "P"
-    PREPARADO = "L"
-    SERVIDO = "C"
+    PREPARADO = "C"
+    SERVIDO = "S"
     PAGADO = "G"
     ESTADO_CHOICES = (
         (PREPARANDO, 'PREPARANDO'),

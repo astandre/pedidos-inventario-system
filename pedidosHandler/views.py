@@ -134,14 +134,11 @@ def pedido_nuevo_api(request):
         serializer = PedidoSerializer(data=request.data)
         if serializer.is_valid():
             pedido = serializer.save()
-            print(pedido.total)
             return JsonResponse({"total": pedido.total, "id_pedido": pedido.id_pedido, "codigo": pedido.codigo},
                                 status=status.HTTP_200_OK)
         else:
             messages.warning(request, "Ha ocurrido un error")
-            return JsonResponse(serializer.errors, status=status.HTTP_404_NOT_FOUND)
-
-
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -151,32 +148,50 @@ def all_pedido_today_api(request):
         return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
 
 
-@api_view(['GET'])
-def pedido_detalle_api(request, id_pedido):
+@api_view(['GET', 'DELETE'])
+def pedido_api(request, id_pedido):
     pedido = Pedido.objects.get(id_pedido=id_pedido)
-    items = Item.objects.filter(pedido=pedido)
-    items_list = []
-    for item_aux in items:
-        item_obj = {
-            "producto": item_aux.producto.id_producto,
-            "cantidad": item_aux.cantidad,
-            "especificacion": item_aux.especificacion,
-            "llevar": item_aux.llevar,
-            "precio": item_aux.precio,
-        }
-        items_list.append(item_obj)
+    if request.method == 'GET':
+        items = Item.objects.filter(pedido=pedido)
+        items_list = []
+        for item_aux in items:
+            item_obj = {
+                "producto": item_aux.producto.id_producto,
+                "cantidad": item_aux.cantidad,
+                "especificacion": item_aux.especificacion,
+                "llevar": item_aux.llevar,
+                "precio": item_aux.precio,
+            }
+            items_list.append(item_obj)
 
-    final_pedido = {
-        "id_pedido": pedido.id_pedido,
-        "mesa": pedido.mesa_id,
-        "codigo": pedido.codigo,
-        "llevar": pedido.llevar,
-        "fecha": pedido.fecha,
-        "estado": pedido.estado,
-        "total": pedido.total,
-        "items": items_list
-    }
-    return JsonResponse({'pedido': final_pedido}, status=status.HTTP_200_OK)
+        final_pedido = {
+            "id_pedido": pedido.id_pedido,
+            "codigo": pedido.codigo,
+            "llevar": pedido.llevar,
+            "fecha": pedido.fecha,
+            "estado": pedido.estado,
+            "total": pedido.total,
+            "items": items_list
+        }
+        if pedido.mesa_id is not None:
+            final_pedido["mesa"] = pedido.mesa_id
+        return JsonResponse({'pedido': final_pedido}, status=status.HTTP_200_OK)
+    elif request.method == 'DELETE':
+        pedido.delete()
+        return JsonResponse({'message': 'Pedido deleted'}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({'message': 'Pedido not found'}, status=status.HTTP_404_NOT_FOUND)
+
+
+@api_view(['POST'])
+def pedido_status_api(request, id_pedido, estado):
+    pedido = Pedido.objects.get(id_pedido=id_pedido)
+    for aux in Pedido.ESTADO_CHOICES:
+        if aux[0] == estado.upper():
+            pedido.estado = aux[0]
+            break
+    pedido.save()
+    return JsonResponse({'pedido': f'Estado cambiado! {pedido.estado}'}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
