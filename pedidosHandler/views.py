@@ -9,8 +9,7 @@ from django.db.models import Sum, Count
 from rest_framework.decorators import api_view
 from django.contrib import messages
 from .serializers import PedidoSerializer
-import datetime
-from django.core.serializers import serialize
+from datetime import datetime
 
 
 @api_view(['GET'])
@@ -186,10 +185,13 @@ def pedido_api(request, id_pedido):
 @api_view(['POST'])
 def pedido_status_api(request, id_pedido, estado):
     pedido = Pedido.objects.get(id_pedido=id_pedido)
-    for aux in Pedido.ESTADO_CHOICES:
-        if aux[0] == estado.upper():
-            pedido.estado = aux[0]
-            break
+    if estado.upper() == Pedido.PREPARADO:
+        pedido.estado = Pedido.PREPARADO
+        pedido.tiempo_preparado = datetime.now()
+    elif estado.upper() == Pedido.SERVIDO:
+        pedido.estado = Pedido.SERVIDO
+        pedido.tiempo_servido = datetime.now()
+
     pedido.save()
     return JsonResponse({'pedido': f'Estado cambiado! {pedido.estado}'}, status=status.HTTP_200_OK)
 
@@ -197,14 +199,43 @@ def pedido_status_api(request, id_pedido, estado):
 @api_view(['GET'])
 def pedido_by_estado_api(request, estado):
     if request.method == 'GET':
-        pedidos = Pedido.objects.pedidos_by_estado_json(estado)
-        return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
+        pedidos_list = []
+        pedidos_local = Pedido.objects.pedidos_today().filter(estado=estado)
+        for pedido in pedidos_local:
+            items = Item.objects.filter(pedido=pedido)
+            items_list = []
+            for item_aux in items:
+                item_obj = {
+                    "producto": item_aux.producto.nombre,
+                    "cantidad": item_aux.cantidad,
+                    "especificacion": item_aux.especificacion,
+                    "llevar": item_aux.llevar,
+                    "precio": item_aux.precio,
+                }
+                items_list.append(item_obj)
+
+            final_pedido = {
+                "id_pedido": pedido.id_pedido,
+                "codigo": pedido.codigo,
+                "llevar": pedido.llevar,
+                "fecha": pedido.fecha,
+                "estado": pedido.estado,
+                "total": pedido.total,
+                "items": items_list
+            }
+
+            if pedido.mesa_id is not None:
+                final_pedido["mesa"] = pedido.mesa.mesa
+
+            pedidos_list.append(final_pedido)
+        return JsonResponse({"pedidos": pedidos_list}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
 def pedido_preparando_api(request):
     if request.method == 'GET':
-        pedidos = Pedido.objects.pedidos_by_estado_json("P") + Pedido.objects.pedidos_by_estado_json("L")
+        pedidos = Pedido.objects.pedidos_by_estado_json(Pedido.PREPARANDO) + Pedido.objects.pedidos_by_estado_json(
+            Pedido.PREPARADO)
         return JsonResponse({"pedidos": pedidos}, status=status.HTTP_200_OK)
 
 
@@ -213,7 +244,7 @@ def reporte_hoy(request):
     template = loader.get_template('pedidosHandler/reporte_hoy.html')
     context = {}
     # Total de dinero en ventas
-    total_ventas = Pedido.objects.filter(fecha__date=datetime.datetime.today(), pagado=True,
+    total_ventas = Pedido.objects.filter(fecha__date=datetime.today(), pagado=True,
                                          terminado=True).aggregate(Sum('total'))["total__sum"]
 
     # print(total_ventas)
@@ -222,7 +253,7 @@ def reporte_hoy(request):
         context['total_ventas'] = total_ventas
     # Todos los items vendidos en el dia
     items = Item.objects.values("producto__nombre", "precio") \
-        .filter(pedido__fecha__date=datetime.datetime.today(), pedido__pagado=True, pedido__terminado=True) \
+        .filter(pedido__fecha__date=datetime.today(), pedido__pagado=True, pedido__terminado=True) \
         .annotate(cantidad_prod=Sum('cantidad')).order_by("-cantidad_prod")
     list(items)
     if len(items) > 0:
@@ -236,7 +267,7 @@ def reporte_hoy(request):
         context['item_menos_vendido'] = item_menos_vendido
 
     # Promedio de completar pedido
-    tiempos_serv = Pedido.objects.only("tiempo_total").filter(fecha__date=datetime.datetime.today(),
+    tiempos_serv = Pedido.objects.only("tiempo_total").filter(fecha__date=datetime.today(),
                                                               terminado=True)
     # print(tiempos_serv)
     if len(tiempos_serv) > 0:
@@ -260,11 +291,10 @@ def reporte_hoy(request):
 def pedidos_frecuencia_api(request):
     if request.method == 'GET':
         pedidos_frec = []
-        date_aux = datetime.datetime.now().strftime("%Y-%m-%dT")
+        date_aux = datetime.now().strftime("%Y-%m-%dT")
         for x in range(12, 23):
-            frec_cont = len(Pedido.objects.filter(fecha__date=datetime
-                                                  .datetime.today(), fecha__hour__gte=x,
-                                                  fecha__hour__lt=x + 1))
+            frec_cont = len(
+                Pedido.objects.filter(fecha__date=datetime.today(), fecha__hour__gte=x, fecha__hour__lt=x + 1))
             pedidos_frec.append({"x": date_aux + str(x) + ":00:00", "y": frec_cont})
         # print(pedidos_frec)
         return JsonResponse({"pedidos": pedidos_frec}, status=status.HTTP_200_OK)

@@ -93,10 +93,12 @@ class Pedido(models.Model):
     ESTADO_CHOICES = (
         (PREPARANDO, 'PREPARANDO'),
         (PREPARADO, 'PREPARADO'),
-        (SERVIDO, 'COMPLETO'),
+        (SERVIDO, 'SERVIDO'),
         (PAGADO, 'PAGADO'),
     )
     estado = models.CharField(max_length=2, choices=ESTADO_CHOICES, blank=False, default=PREPARANDO)
+    tiempo_preparado = models.TimeField(blank=True, null=True)
+    tiempo_servido = models.TimeField(blank=True, null=True)
     tiempo_total = models.TimeField(blank=True, null=True)
     total = models.DecimalField(default=0, max_digits=5, decimal_places=2)
 

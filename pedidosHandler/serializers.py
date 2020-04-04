@@ -54,6 +54,7 @@ class PedidoSerializer(serializers.Serializer):
         pedido.save()
         total = 0
         for item in validated_data["items"]:
+            print(item)
             try:
                 producto = Producto.objects.get(id_producto=item["id_producto"])
             except Producto.DoesNotExist:
@@ -61,8 +62,8 @@ class PedidoSerializer(serializers.Serializer):
             else:
                 total += producto.precio * item["cantidad"]
                 new_item = Item(producto=producto, cantidad=int(item["cantidad"]), precio=producto.precio,
-                                pedido=pedido, especificacion=item["especificacion"], )
-                if "llevar" in validated_data and validated_data["llevar"]:
+                                pedido=pedido, especificacion=item["especificacion"])
+                if pedido.llevar:
                     new_item.llevar = True
                 else:
                     new_item.llevar = item["llevar"]
