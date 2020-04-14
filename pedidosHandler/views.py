@@ -200,7 +200,10 @@ def pedido_status_api(request, id_pedido, estado):
 def pedido_by_estado_api(request, estado):
     if request.method == 'GET':
         pedidos_list = []
-        pedidos_local = Pedido.objects.pedidos_today().filter(estado=estado)
+        if estado == "A":
+            pedidos_local = Pedido.objects.pedidos_today()
+        else:
+            pedidos_local = Pedido.objects.pedidos_today().filter(estado=estado)
         for pedido in pedidos_local:
             items = Item.objects.filter(pedido=pedido)
             items_list = []
@@ -211,6 +214,7 @@ def pedido_by_estado_api(request, estado):
                     "especificacion": item_aux.especificacion,
                     "llevar": item_aux.llevar,
                     "precio": item_aux.precio,
+                    "id_item": item_aux.id_item
                 }
                 items_list.append(item_obj)
 
