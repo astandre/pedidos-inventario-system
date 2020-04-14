@@ -10,10 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
-import os
+import os,json
 import dj_database_url
+from django.core.exceptions import ImproperlyConfigured
 from decouple import config, Csv
 from django.contrib.messages import constants as messages
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -63,7 +65,7 @@ ROOT_URLCONF = 'pedidosSystem.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
+        'DIRS': [os.path.join(BASE_DIR, '../../templates')]
         ,
         'APP_DIRS': True,
         'OPTIONS': {
@@ -98,7 +100,7 @@ REST_FRAMEWORK = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'pedidos',
+        'NAME': 'pedidos-prod',
         'USER': 'user',
         'PASSWORD': 'password',
         'HOST': 'db',
@@ -151,10 +153,10 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, '../../static'),
 )
 TEMPLATE_DIRS = [
-    os.path.join(BASE_DIR, 'templates')
+    os.path.join(BASE_DIR, '../../templates')
 ]
 
 LOGIN_URL = '/admin'
