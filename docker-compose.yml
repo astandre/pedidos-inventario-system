@@ -6,10 +6,10 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=user
-      - POSTGRES_DB=pedidos
+      - POSTGRES_DB=pedidos-staging
   web:
     build: .
-    command: python manage.py runserver 0.0.0.0:8000
+    command: python manage.py runserver 0.0.0.0:8000 --settings=pedidosSystem.settings.staging
     volumes:
       - .:/app
     ports:
