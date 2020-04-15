@@ -10,6 +10,7 @@ from rest_framework.decorators import api_view
 from django.contrib import messages
 from .serializers import PedidoSerializer
 from datetime import datetime
+from django.db.models import Q
 
 
 @api_view(['GET'])
@@ -191,6 +192,9 @@ def pedido_status_api(request, id_pedido, estado):
     elif estado.upper() == Pedido.SERVIDO:
         pedido.estado = Pedido.SERVIDO
         pedido.tiempo_servido = datetime.now()
+    elif estado.upper() == Pedido.PAGADO:
+        pedido.estado = Pedido.PAGADO
+        pedido.tiempo_total = datetime.now()
 
     pedido.save()
     return JsonResponse({'pedido': f'Estado cambiado! {pedido.estado}'}, status=status.HTTP_200_OK)
@@ -201,7 +205,7 @@ def pedido_by_estado_api(request, estado):
     if request.method == 'GET':
         pedidos_list = []
         if estado == "A":
-            pedidos_local = Pedido.objects.pedidos_today()
+            pedidos_local = Pedido.objects.pedidos_today().exclude(estado=Pedido.PAGADO)
         else:
             pedidos_local = Pedido.objects.pedidos_today().filter(estado=estado)
         for pedido in pedidos_local:
