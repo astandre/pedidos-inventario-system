@@ -1,5 +1,5 @@
 # Instalacion
-
+[![Build Status](https://travis-ci.org/astandre/pedidos-inventario-system.svg?branch=master)](https://travis-ci.org/astandre/pedidos-inventario-system)
 ## Construccion de contenedores
 
 ```
