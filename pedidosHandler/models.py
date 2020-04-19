@@ -37,7 +37,7 @@ class Mesa(models.Model):
 
 class Cliente(models.Model):
     id_cliente = models.AutoField(primary_key=True)
-    cedula = models.CharField(max_length=12, null=False)
+    cedula = models.CharField(max_length=12, null=True)
     nombres = models.CharField(max_length=200, null=False)
     apellidos = models.CharField(max_length=200, null=True, blank=True)
     telefono_fijo = models.CharField(max_length=16, null=True, blank=True)
@@ -82,7 +82,8 @@ class PedidoManager(models.Manager):
 class Pedido(models.Model):
     id_pedido = models.AutoField(primary_key=True)
     codigo = models.IntegerField(blank=False, null=False, default=1)
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    # cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    cliente = models.CharField(max_length=100, blank=True, default="CONSUMIDOR FINAL")
     mesa = models.ForeignKey(Mesa, null=True, blank=True, on_delete=models.CASCADE)
     llevar = models.BooleanField(default=False)
     fecha = models.DateTimeField(default=datetime.now)
@@ -119,6 +120,8 @@ class Item(models.Model):
     producto = models.ForeignKey(Producto, on_delete=models.CASCADE)
     cantidad = models.IntegerField(blank=False, null=False, default=1)
     especificacion = models.CharField(max_length=200, null=True, blank=True)
+    entregado = models.BooleanField(default=False)
+    cocinado = models.BooleanField(default=False)
     llevar = models.BooleanField(default=False)
     precio = models.DecimalField(null=False, max_digits=5, decimal_places=2)
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE)

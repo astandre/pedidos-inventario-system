@@ -161,6 +161,8 @@ def pedido_api(request, id_pedido):
                 "especificacion": item_aux.especificacion,
                 "llevar": item_aux.llevar,
                 "precio": item_aux.precio,
+                "entregado": item_aux.entregado,
+                "cocinado": item_aux.cocinado
             }
             items_list.append(item_obj)
 
@@ -171,6 +173,7 @@ def pedido_api(request, id_pedido):
             "fecha": pedido.fecha,
             "estado": pedido.estado,
             "total": pedido.total,
+            "user": pedido.cliente,
             "items": items_list
         }
         if pedido.mesa_id is not None:
@@ -188,10 +191,20 @@ def pedido_status_api(request, id_pedido, estado):
     pedido = Pedido.objects.get(id_pedido=id_pedido)
     if estado.upper() == Pedido.PREPARADO:
         pedido.estado = Pedido.PREPARADO
-        pedido.tiempo_preparado = datetime.now()
+        items = Item.objects.filter(pedido=pedido)
+        for item in items:
+            item.cocinado = True
+            item.save()
+        if pedido.tiempo_preparado is None:
+            pedido.tiempo_preparado = datetime.now()
     elif estado.upper() == Pedido.SERVIDO:
         pedido.estado = Pedido.SERVIDO
-        pedido.tiempo_servido = datetime.now()
+        items = Item.objects.filter(pedido=pedido)
+        for item in items:
+            item.entregado = True
+            item.save()
+        if pedido.tiempo_servido is None:
+            pedido.tiempo_servido = datetime.now()
     elif estado.upper() == Pedido.PAGADO:
         pedido.estado = Pedido.PAGADO
         pedido.tiempo_total = datetime.now()
@@ -218,7 +231,9 @@ def pedido_by_estado_api(request, estado):
                     "especificacion": item_aux.especificacion,
                     "llevar": item_aux.llevar,
                     "precio": item_aux.precio,
-                    "id_item": item_aux.id_item
+                    "id_item": item_aux.id_item,
+                    "entregado": item_aux.entregado,
+                    "cocinado": item_aux.cocinado
                 }
                 items_list.append(item_obj)
 
@@ -229,6 +244,7 @@ def pedido_by_estado_api(request, estado):
                 "fecha": pedido.fecha,
                 "estado": pedido.estado,
                 "total": pedido.total,
+                "user": pedido.cliente,
                 "items": items_list
             }
 

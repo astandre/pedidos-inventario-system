@@ -11,15 +11,16 @@ class ItemsInline(admin.TabularInline):
 
 
 class ItemsAdmin(admin.ModelAdmin):
-    list_display = ('producto', 'pedido', 'precio')
-    list_filter = ['producto__nombre', 'pedido__cliente']
+    list_display = ('producto', 'pedido', 'precio', 'cocinado', 'entregado')
+    list_filter = ['producto__nombre', 'pedido__cliente', 'cocinado', 'entregado']
 
 
 class PedidosAdmin(admin.ModelAdmin):
     inlines = [ItemsInline]
     search_fields = ['id_pedido']
     list_display = ('id_pedido', 'cliente', 'total', 'fecha', 'estado', 'tiempo_total', 'mesa')
-    list_filter = ['cliente__cedula', 'cliente__nombres', 'cliente__apellidos', 'estado', 'fecha', 'mesa__mesa']
+    # list_filter = ['cliente__cedula', 'cliente__nombres', 'cliente__apellidos', 'estado', 'fecha', 'mesa__mesa']
+    list_filter = ['estado', 'fecha', 'mesa__mesa']
 
 
 class ClientesAdmin(admin.ModelAdmin):
