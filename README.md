@@ -3,18 +3,25 @@
 ## Construccion de contenedores
 
 ```
-docker-compose  -d --build
+docker-compose  up
 ```
-## Migracion de tablas
+## Hacer migraciones
 
 ```
-docker-compose exec web python manage.py migrate --noinput
+docker exec -it pedidos_backend python manage.py makemigrations
+```
+## Migrar
+```
+docker exec -it pedidos_backend python manage.py migrate 
 ```
 ## Carga de datos
 ```
-exec web python manage.py dumpdata inventarioHandler.categoria inventarioHandler.producto
+docker exec -it pedidos_backend python manage.py dumpdata inventarioHandler.categoria inventarioHandler.producto
 ```
-
+## Crear super usuario
+```
+docker exec -it pedidos_backend python manage.py createsuperuser
+```
 
 ## Collect static
 
